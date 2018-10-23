@@ -1,5 +1,6 @@
 defmodule Rubyfatt2Web.Router do
   use Rubyfatt2Web, :router
+  alias Rubyfatt2Web.Api
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,6 +14,10 @@ defmodule Rubyfatt2Web.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :authenticate do
+    plug Rubyfatt2Web.Plugs.Authenticate
+  end
+
   scope "/", Rubyfatt2Web do
     pipe_through :browser # Use the default browser stack
 
@@ -20,7 +25,16 @@ defmodule Rubyfatt2Web.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Rubyfatt2Web do
-  #   pipe_through :api
-  # end
+  scope "/api", Api do
+    pipe_through :api
+
+    scope "/session" do
+      post "/sign_in", SessionController, :create
+      delete "/sign_out", SessionController, :delete
+    end
+
+    scope "/v1", V1 do
+      pipe_through :authenticate
+    end
+  end
 end

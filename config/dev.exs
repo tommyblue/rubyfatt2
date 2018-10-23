@@ -57,6 +57,6 @@ config :rubyfatt2, Rubyfatt2.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "fatture_production",
+  database: "rubyfatt",
   hostname: "localhost",
   pool_size: 10

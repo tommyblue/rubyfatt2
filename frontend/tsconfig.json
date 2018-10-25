@@ -7,8 +7,10 @@
         "moduleResolution": "node",
         "noImplicitAny": true,
         "outDir": "ts-build",
-        "sourceMap": false,
-        "target": "es5"
+        "sourceMap": true,
+        "target": "es5",
+        "experimentalDecorators": true,
+        "lib": ["es2017", "dom"]
     },
     "include": [
         "./src/**/*"

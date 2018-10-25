@@ -13,6 +13,7 @@ module.exports = {
         extensions: [".ts", ".tsx", ".js", ".jsx"],
         modules: ["deps", "node_modules"]
     },
+    devtool: 'source-map',
     module: {
         rules: [
             {
@@ -38,13 +39,13 @@ module.exports = {
                 loader: "awesome-typescript-loader"
             },
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     'loader': 'babel-loader',
                     options: {
                         presets: ['@babel/preset-env']
-                    }
+                    },
                 }
             }
         ]

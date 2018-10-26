@@ -3,7 +3,7 @@ import { observable } from "mobx";
 
 export interface IStore {
     authToken: string;
-    authenticate: () => void;
+    authenticate: (email: string, password: string) => void;
 }
 
 export class RootStore {
@@ -15,7 +15,7 @@ export class RootStore {
         }
     }
 
-    public authenticate(): void {
+    public authenticate(email: string, password: string): void {
         console.log("auth!")
         this.authToken = "pippo";
     }

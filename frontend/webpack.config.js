@@ -17,6 +17,19 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    use: [{
+                        loader: "css-loader",
+                        options: {
+                            minimize: true,
+                            sourceMap: env === 'production',
+                        }
+                    }],
+                    fallback: "style-loader"
+                })
+            },
+            {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     use: [{
@@ -47,6 +60,11 @@ module.exports = {
                         presets: ['@babel/preset-env']
                     },
                 }
+            },
+            {
+                test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+                // put fonts in assets/static/fonts/
+                loader: 'file-loader?name=/fonts/[name].[ext]'
             }
         ]
     },

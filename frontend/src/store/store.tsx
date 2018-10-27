@@ -1,23 +1,12 @@
 import * as React from "react";
-import { observable } from "mobx";
 
-export interface IStore {
-    authToken: string;
-    authenticate: (email: string, password: string) => void;
-}
+import { AuthStore } from "./auth";
 
 export class RootStore {
-    @observable authToken: string | null = null;
+    authStore: AuthStore = null;
 
-    constructor(params?: IStore) {
-        if (params && params.authToken) {
-            this.authToken = params.authToken;
-        }
-    }
-
-    public authenticate(email: string, password: string): void {
-        console.log("auth!")
-        this.authToken = "pippo";
+    constructor() {
+        this.authStore = new AuthStore(this);
     }
 }
 

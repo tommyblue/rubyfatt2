@@ -8,10 +8,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 
 import { Form } from "../components/Login/Form";
-import { IStore, withStore } from "../store";
+import { RootStore, withStore } from "../store/store";
 
 interface IProps {
-    store: IStore;
+    store: RootStore;
     location: string;
     classes: any;
 }
@@ -43,7 +43,7 @@ class Login extends React.Component<IProps, IState> {
     }
 
     public render(): JSX.Element {
-        if (this.props.store.authToken) {
+        if (this.props.store.authStore.authToken) {
             return (
                 <Redirect
                     to={{
@@ -78,7 +78,7 @@ class Login extends React.Component<IProps, IState> {
     }
 
     private authenticate(): void {
-        this.props.store.authenticate(this.state.email, this.state.password);
+        this.props.store.authStore.authenticate(this.state.email, this.state.password);
     }
 }
 

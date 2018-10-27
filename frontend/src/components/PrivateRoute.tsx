@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { observer } from "mobx-react"
 
-import { IStore, withStore } from "../store";
+import { RootStore, withStore } from "../store/store";
 
 interface IProps {
-    store: IStore;
+    store: RootStore;
     location: any;
     component: any;
     path: string;
@@ -13,7 +13,7 @@ interface IProps {
 
 class WrappedRoute extends React.Component<IProps, {}> {
     render() {
-        if (!this.props.store.authToken) {
+        if (!this.props.store.authStore.authToken) {
             return (
                 <Redirect
                     to={{

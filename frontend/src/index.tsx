@@ -7,7 +7,7 @@ import 'typeface-roboto';
 import { Messages } from "./components/Notifications/Messages";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { RootStore, Provider } from "./store/store";
-import Customers from "./components/Customers";
+import Customers from "./containers/Customers";
 import Login from "./containers/Login";
 import NavBar from "./components/NavBar";
 

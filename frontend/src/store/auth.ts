@@ -62,6 +62,21 @@ export class AuthStore {
         this.authenticate = null;
     }
 
+    public authFetch(url: string, method: string = "GET", headers: HeadersInit = {}): Promise<Response> {
+        const requestInit:RequestInit = {
+            method,
+            headers: {
+                ...headers,
+                ...{
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                'Authorization': `Bearer ${this.authToken}`
+            },
+        };
+        return fetch(url, requestInit)
+    };
+
     private setAuthToken(token: string): void {
         const cookies = new Cookies();
         cookies.set(this.cookie_name, token, {

@@ -1,14 +1,17 @@
 import * as React from "react";
 
 import { AuthStore } from "./auth";
+import { DomainStore } from "./domain";
 import { MessagesStore } from "./messages";
 
 export class RootStore {
     authStore: AuthStore = null;
+    domainStore: DomainStore = null;
     messagesStore: MessagesStore = null;
 
     constructor() {
         this.authStore = new AuthStore(this);
+        this.domainStore = new DomainStore(this);
         this.messagesStore = new MessagesStore(this);
     }
 }

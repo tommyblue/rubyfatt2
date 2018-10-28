@@ -45,7 +45,7 @@ export class AuthStore {
         }).then(
             (response: any) => {
                 if (!response.ok) {
-                    return console.log(response.statusText);
+                    return console.warn(response.statusText);
                 }
                 return response.json().then(
                     (jsonResp: IAuthResponse) => {

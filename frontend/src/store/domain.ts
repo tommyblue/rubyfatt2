@@ -2,7 +2,7 @@ import { computed, observable } from "mobx";
 
 import { RootStore } from "./store";
 
-interface ICustomer {
+export interface ICustomer {
     id: number;
     title: string;
     name: string;
@@ -30,7 +30,7 @@ export class DomainStore {
         this.rootStore.authStore.authFetch("/api/v1/customers").then(
             (response: any) => {
                 if (!response.ok) {
-                    return console.log(response.statusText);
+                    return console.warn(response.statusText);
                 }
                 return response.json().then(
                     (jsonResp: {data: ICustomer[]}) => {

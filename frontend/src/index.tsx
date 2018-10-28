@@ -16,6 +16,7 @@ const Router = () => (
     <HashRouter>
         <Switch>
             <Route path='/login' component={Login} />
+            <PrivateRoute path='/customers/:id' component={Customers}/>
             <PrivateRoute path='/customers' component={Customers}/>
             <PrivateRoute path='/' component={Customers}/>
         </Switch>

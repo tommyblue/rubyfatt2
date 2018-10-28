@@ -1,5 +1,8 @@
-import * as React from "react";
+import { filter } from "lodash";
+import { Link } from "react-router-dom";
+import { match } from "react-router";
 import { observer } from "mobx-react"
+import * as React from "react";
 
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,7 +12,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import { drawerWidth } from "../index";
+import { ICustomer } from "../store/domain";
 import { RootStore, withStore } from "../store/store";
+import Customer from "../components/Customer";
 import NavBar from "../components/NavBar";
 
 const styles = (theme: any) => ({
@@ -29,11 +34,15 @@ const styles = (theme: any) => ({
       padding: theme.spacing.unit * 3,
     },
     toolbar: theme.mixins.toolbar,
+    link: {
+        textDecoration: "none",
+    }
 });
 
 interface IProps {
     store: RootStore;
     classes: any;
+    match: match;
 }
 
 class WrappedCustomers extends React.Component<IProps, {}> {
@@ -60,17 +69,35 @@ class WrappedCustomers extends React.Component<IProps, {}> {
                     <List>
                         {this.props.store.domainStore.customers.map((customer, index) => (
                             <ListItem button key={customer.id}>
-                                <ListItemText primary={customer.title} />
+                                <Link to={`/customers/${customer.id}`} className={classes.link}>
+                                    <ListItemText primary={customer.title} />
+                                </Link>
                             </ListItem>
                         ))}
                     </List>
                 </Drawer>
                 <main className={classes.content}>
-                asd
-
+                    <div className={classes.toolbar} />
+                    {this.showCustomer()}
                 </main>
             </div>
         );
+    }
+
+    private showCustomer(): JSX.Element {
+        const params = this.props.match.params as any;
+        if (!params.id) {
+            return <span />;
+        }
+
+        const customers = filter(this.props.store.domainStore.customers,
+            (customer: ICustomer) => customer.id === parseInt(params.id)
+        );
+        if (customers.length !== 1) {
+            return <span />;
+        }
+
+        return <Customer customer={customers[0]} />
     }
 }
 

@@ -13,7 +13,7 @@ interface IProps {
 
 class WrappedRoute extends React.Component<IProps, {}> {
     render() {
-        if (!this.props.store.authStore.authToken) {
+        if (!this.props.store.authStore.isAuthenticated) {
             return (
                 <Redirect
                     to={{

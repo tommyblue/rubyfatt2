@@ -9,6 +9,7 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { RootStore, Provider } from "./store/store";
 import Customers from "./components/Customers";
 import Login from "./containers/Login";
+import NavBar from "./components/NavBar";
 
 const Router = () => (
     <HashRouter>
@@ -23,6 +24,7 @@ const Router = () => (
 const App = () => (
     <div>
         <Messages />
+        <NavBar />
         <Router />
     </div>
 );

@@ -1,5 +1,5 @@
 import { isEmpty } from "lodash";
-import { observable } from "mobx";
+import { computed, observable } from "mobx";
 import Cookies from "universal-cookie";
 
 import { RootStore } from "./store";
@@ -21,6 +21,10 @@ export class AuthStore {
         this.rootStore = rootStore;
 
         this.checkCookie();
+    }
+
+    @computed public get isAuthenticated(): boolean {
+        return this.authToken !== null;
     }
 
     public authenticate(email: string, password: string): void {

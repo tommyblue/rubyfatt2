@@ -17,8 +17,8 @@ interface IProps {
 }
 
 export interface IState {
-    email: string|null;
-    password: string|null;
+    email: string;
+    password: string;
 }
 
 const styles = (theme: any) => ({
@@ -37,7 +37,7 @@ const styles = (theme: any) => ({
 class Login extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
-        this.state = { email: null, password: null };
+        this.state = { email: "", password: "" };
         this.authenticate = this.authenticate.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }

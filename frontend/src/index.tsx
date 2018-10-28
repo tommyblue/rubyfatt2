@@ -1,15 +1,16 @@
+import { HashRouter, Switch, Route } from "react-router-dom";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { HashRouter, Switch, Route } from "react-router-dom";
 
 import 'typeface-roboto';
 
-import Customers from "./components/Customers";
-import Login from "./containers/Login";
+import { Messages } from "./components/Notifications/Messages";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { RootStore, Provider } from "./store/store";
+import Customers from "./components/Customers";
+import Login from "./containers/Login";
 
-const App = () => (
+const Router = () => (
     <HashRouter>
         <Switch>
             <Route path='/login' component={Login} />
@@ -17,6 +18,13 @@ const App = () => (
             <PrivateRoute path='/' component={Customers}/>
         </Switch>
     </HashRouter>
+);
+
+const App = () => (
+    <div>
+        <Messages />
+        <Router />
+    </div>
 );
 
 ReactDOM.render(

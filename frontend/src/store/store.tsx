@@ -1,12 +1,15 @@
 import * as React from "react";
 
 import { AuthStore } from "./auth";
+import { MessagesStore } from "./messages";
 
 export class RootStore {
     authStore: AuthStore = null;
+    messagesStore: MessagesStore = null;
 
     constructor() {
         this.authStore = new AuthStore(this);
+        this.messagesStore = new MessagesStore(this);
     }
 }
 

@@ -59,7 +59,7 @@ export class AuthStore {
 
     public signOut(): void {
         this.removeAuthToken();
-        this.authenticate = null;
+        this.authToken = null;
     }
 
     public authFetch(url: string, method: string = "GET", headers: HeadersInit = {}): Promise<Response> {

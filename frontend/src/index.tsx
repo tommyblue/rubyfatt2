@@ -9,7 +9,8 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { RootStore, Provider } from "./store/store";
 import Customers from "./containers/Customers";
 import Login from "./containers/Login";
-import NavBar from "./components/NavBar";
+
+export const drawerWidth = 300;
 
 const Router = () => (
     <HashRouter>
@@ -22,9 +23,8 @@ const Router = () => (
 );
 
 const App = () => (
-    <div>
+    <div style={{display: "flex"}}>
         <Messages />
-        <NavBar />
         <Router />
     </div>
 );

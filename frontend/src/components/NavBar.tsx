@@ -6,46 +6,40 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 
 import { RootStore, withStore } from "../store/store";
 
-const styles = {
-    root: {
-      flexGrow: 1,
+const styles = (theme: any) => ({
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
     },
     grow: {
-      flexGrow: 1,
+        flexGrow: 1,
     },
     menuButton: {
-      marginLeft: -12,
-      marginRight: 20,
+        marginLeft: -12,
+        marginRight: 20,
     },
-  };
+});
 
 interface IProps {
     store: RootStore;
     classes: any;
+    onMenuButtonClick: () => void;
 }
 
 class WrappedNavBar extends React.Component<IProps, {}> {
     public render(): JSX.Element {
         const { classes } = this.props;
         return (
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" color="inherit" className={classes.grow}>
-                            Rubyfatt2
-                        </Typography>
-                        {this.authButtons()}
-                    </Toolbar>
-                </AppBar>
-            </div>
+            <AppBar position="fixed" className={classes.appBar}>
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" className={classes.grow}>
+                        Rubyfatt2
+                    </Typography>
+                    {this.authButtons()}
+                </Toolbar>
+            </AppBar>
         )
     }
 

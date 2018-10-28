@@ -22,7 +22,21 @@ defmodule Rubyfatt2.Customer do
 
   def changeset(customer, attrs) do
     customer
-    |> cast(attrs, [:title])
-    |> unique_constraint([:title, :user_id])
+    |> cast(attrs, [
+      :user_id,
+      :title,
+      :name,
+      :surname,
+      :address,
+      :zip_code,
+      :town,
+      :province,
+      :country,
+      :tax_code,
+      :vat,
+      :info
+    ])
+    |> validate_required([:title])
+    |> unique_constraint(:title, name: :customers_user_id_title_index)
   end
 end

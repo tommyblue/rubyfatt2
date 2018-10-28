@@ -6,7 +6,7 @@ defmodule Rubyfatt2Web.Plugs.Authenticate do
     case Rubyfatt2.Services.Authenticator.get_auth_token(conn) do
       {:ok, token} ->
         case Rubyfatt2.Repo.get_by(Rubyfatt2.AuthToken, %{token: token, revoked: false})
-        |> Repo.preload(:user) do
+        |> Rubyfatt2.Repo.preload(:user) do
           nil -> unauthorized(conn)
           auth_token -> authorized(conn, auth_token.user)
         end
@@ -15,10 +15,9 @@ defmodule Rubyfatt2Web.Plugs.Authenticate do
   end
 
   defp authorized(conn, user) do
-    # If you want, add new values to `conn`
-    assign(conn, :signed_in, true)
-    assign(conn, :signed_user, user)
     conn
+    |> assign(:signed_in, true)
+    |> assign(:signed_user, user)
   end
 
   defp unauthorized(conn) do

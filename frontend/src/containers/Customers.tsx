@@ -17,6 +17,11 @@ interface IProps {
 
 class WrappedCustomers extends React.Component<IProps, {}> {
 
+    constructor(props: IProps) {
+        super(props);
+        this.showCustomer = this.showCustomer.bind(this);
+    }
+
     public componentDidMount() {
         this.props.store.domainStore.loadCustomers();
     }

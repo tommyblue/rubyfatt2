@@ -22,11 +22,11 @@ interface IProps {
 const CustomersList = (props: IProps) => (
     <List>
         {props.customers.map((customer, index) => (
-            <ListItem button key={customer.id}>
-                <Link to={`/customers/${customer.id}`} className={props.classes.link}>
+            <Link to={`/customers/${customer.id}`} className={props.classes.link} key={customer.id}>
+                <ListItem button>
                     <ListItemText primary={customer.title} />
-                </Link>
-            </ListItem>
+                </ListItem>
+            </Link>
         ))}
     </List>
 );

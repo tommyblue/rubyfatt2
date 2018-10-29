@@ -8,6 +8,7 @@ import { Messages } from "./components/Notifications/Messages";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { RootStore, Provider } from "./store/store";
 import Customers from "./containers/Customers";
+import Dashboard from "./containers/Dashboard";
 import Login from "./containers/Login";
 
 export const drawerWidth = 300;
@@ -18,7 +19,7 @@ const Router = () => (
             <Route path='/login' component={Login} />
             <PrivateRoute path='/customers/:id' component={Customers}/>
             <PrivateRoute path='/customers' component={Customers}/>
-            <PrivateRoute path='/' component={Customers}/>
+            <PrivateRoute path='/' component={Dashboard}/>
         </Switch>
     </HashRouter>
 );

@@ -27,7 +27,6 @@ class WrappedCustomers extends React.Component<IProps, {}> {
     }
 
     public render(): JSX.Element {
-        const { classes } = this.props;
         return (
             <Page sidebarContent={
                 <CustomersList customers={this.props.store.domainStore.customers} />

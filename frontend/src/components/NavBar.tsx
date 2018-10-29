@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { observer } from "mobx-react"
 import * as React from "react";
 
@@ -20,6 +21,10 @@ const styles = (theme: any) => ({
         marginLeft: -12,
         marginRight: 20,
     },
+    logo: {
+        color: "white",
+        textDecoration: "none"
+    }
 });
 
 interface IProps {
@@ -35,7 +40,7 @@ class WrappedNavBar extends React.Component<IProps, {}> {
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar>
                     <Typography variant="h6" color="inherit" className={classes.grow}>
-                        Rubyfatt2
+                        <Link to="/" className={classes.logo}>Rubyfatt 2</Link>
                     </Typography>
                     {this.authButtons()}
                 </Toolbar>

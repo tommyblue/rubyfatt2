@@ -1,4 +1,5 @@
-import { computed, observable } from "mobx";
+import { isEmpty } from "lodash";
+import { observable } from "mobx";
 
 import { RootStore } from "./store";
 
@@ -26,7 +27,11 @@ export class DomainStore {
         this.rootStore = rootStore;
     }
 
-    public loadCustomers(): void {
+    public loadCustomers(force: boolean = false): void {
+        if (!isEmpty(this.customers) && !force) {
+            return
+        }
+
         this.rootStore.authStore.authFetch("/api/v1/customers").then(
             (response: any) => {
                 if (!response.ok) {

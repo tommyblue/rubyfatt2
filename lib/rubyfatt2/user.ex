@@ -7,6 +7,7 @@ defmodule Rubyfatt2.User do
   schema "users" do
     has_many :auth_tokens, Rubyfatt2.AuthToken
     has_many :customers, Rubyfatt2.Customer
+    has_many :consolidated_taxes, Rubyfatt2.ConsolidatedTax
 
     field :address, :string
     field :bank_coordinates, :string

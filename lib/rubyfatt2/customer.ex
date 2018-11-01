@@ -4,6 +4,9 @@ defmodule Rubyfatt2.Customer do
 
   schema "customers" do
     belongs_to :user, Rubyfatt2.User
+    has_many :slips, Rubyfatt2.Slip
+    has_many :invoice_projects, Rubyfatt2.InvoiceProject
+    has_many :invoices, Rubyfatt2.Invoice
 
     field :title, :string
     field :name, :string

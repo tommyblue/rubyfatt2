@@ -3,7 +3,7 @@ import { match } from "react-router";
 import { observer } from "mobx-react"
 import * as React from "react";
 
-import { ICustomer } from "../store/domain";
+import CustomerModel from "../models/customer";
 import { RootStore, withStore } from "../store/store";
 import Customer from "../components/Customers/Customer";
 import CustomersList from "../components/Customers/CustomersList";
@@ -29,7 +29,7 @@ class WrappedCustomers extends React.Component<IProps, {}> {
     public render(): JSX.Element {
         return (
             <Page sidebarContent={
-                <CustomersList customers={this.props.store.domainStore.getCustomers} />
+                <CustomersList customers={this.props.store.domainStore.customersList} />
             }>
                 <div>
                     {this.showCustomer()}
@@ -45,7 +45,7 @@ class WrappedCustomers extends React.Component<IProps, {}> {
         }
 
         const customers = filter(this.props.store.domainStore.customers,
-            (customer: ICustomer) => customer.id === parseInt(params.id)
+            (customer: CustomerModel) => customer.id === parseInt(params.id)
         );
         if (customers.length !== 1) {
             return <span />;

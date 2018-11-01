@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 
 import NewCustomer from "./New";
-import { ICustomer } from "../../store/domain";
+import Customer from "../../models/customer";
 
 const styles = (theme: any) => ({
     link: {
@@ -18,14 +18,14 @@ const styles = (theme: any) => ({
 
 interface IProps {
     classes: any;
-    customers: ICustomer[];
+    customers: Customer[];
 }
 
 const CustomersList = (props: IProps) => (
     <List>
         <NewCustomer />
         <Divider />
-        {props.customers.map((customer, index) => (
+        {props.customers.map((customer) => (
             <Link to={`/customers/${customer.id}`} className={props.classes.link} key={customer.id}>
                 <ListItem button>
                     <ListItemText primary={customer.title} />

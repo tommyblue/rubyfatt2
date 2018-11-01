@@ -1,33 +1,20 @@
-import { isEmpty, sortBy } from "lodash";
+import { isEmpty, map, sortBy } from "lodash";
 import { computed, observable } from "mobx";
 
 import { RootStore } from "./store";
+import Customer, { ICustomer } from "../models/customer";
 
-export interface ICustomer {
-    id?: number;
-    title: string;
-    name: string;
-    surname: string;
-    address: string;
-    zip_code: string;
-    town: string;
-    province: string;
-    country: string;
-    tax_code: string;
-    vat: string;
-    info: string;
-}
 
 export class DomainStore {
     rootStore: RootStore = null;
 
-    @observable customers: ICustomer[] = [];
+    @observable customers: Customer[] = [];
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
     }
 
-    @computed get getCustomers(): ICustomer[] {
+    @computed get customersList(): Customer[] {
         return sortBy(this.customers, "title");
     }
 
@@ -39,7 +26,7 @@ export class DomainStore {
                 }
                 return response.json().then(
                     (jsonResp: {data: ICustomer}) => {
-                        this.customers.push(jsonResp.data);
+                        this.customers.push(new Customer(jsonResp.data));
                     }
                 );
             }
@@ -58,7 +45,7 @@ export class DomainStore {
                 }
                 return response.json().then(
                     (jsonResp: {data: ICustomer[]}) => {
-                        this.customers = jsonResp.data;
+                        this.customers = map(jsonResp.data, (c: ICustomer) => new Customer(c));
                     }
                 );
             }

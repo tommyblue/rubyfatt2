@@ -14,7 +14,7 @@ defmodule Rubyfatt2.Repo.Migrations.CreateCustomers do
       add :country, :string
       add :tax_code, :string
       add :vat, :string
-      add :info, :string
+      add :info, :text
       timestamps()
     end
     create index(:customers, [:user_id, :title], unique: true)

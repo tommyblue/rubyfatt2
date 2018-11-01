@@ -9,3 +9,9 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+changeset = Rubyfatt2.User.changeset(%Rubyfatt2.User{}, %{
+  email: "tommaso.visconti@kreations.it",
+  password: "s3cr3t"
+})
+Rubyfatt2.Repo.insert!(changeset)

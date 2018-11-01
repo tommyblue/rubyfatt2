@@ -12,7 +12,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { ICustomer } from "../../store/domain";
+import { ICustomer } from "../../models/customer";
 import { MessageTypes } from "../../store/messages";
 import { RootStore, withStore } from "../../store/store";
 import Form from "./Form";

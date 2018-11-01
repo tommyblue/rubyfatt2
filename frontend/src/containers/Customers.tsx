@@ -5,8 +5,8 @@ import * as React from "react";
 
 import { ICustomer } from "../store/domain";
 import { RootStore, withStore } from "../store/store";
-import Customer from "../components/Customer";
-import CustomersList from "../components/CustomersList";
+import Customer from "../components/Customers/Customer";
+import CustomersList from "../components/Customers/CustomersList";
 import Page from "../components/Page";
 
 interface IProps {
@@ -29,9 +29,11 @@ class WrappedCustomers extends React.Component<IProps, {}> {
     public render(): JSX.Element {
         return (
             <Page sidebarContent={
-                <CustomersList customers={this.props.store.domainStore.customers} />
+                <CustomersList customers={this.props.store.domainStore.getCustomers} />
             }>
-                {this.showCustomer()}
+                <div>
+                    {this.showCustomer()}
+                </div>
             </Page>
         );
     }

@@ -62,7 +62,7 @@ export class AuthStore {
         this.authToken = null;
     }
 
-    public authFetch(url: string, method: string = "GET", headers: HeadersInit = {}): Promise<Response> {
+    public authFetch(url: string, method: string = "GET", body: any = {}, headers: HeadersInit = {}): Promise<Response> {
         const requestInit:RequestInit = {
             method,
             headers: {
@@ -74,6 +74,9 @@ export class AuthStore {
                 'Authorization': `Bearer ${this.authToken}`
             },
         };
+        if (!isEmpty(body) && method !== "GET") {
+            requestInit.body = JSON.stringify(body);
+        }
         return fetch(url, requestInit)
     };
 

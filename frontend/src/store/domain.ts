@@ -1,10 +1,10 @@
-import { isEmpty } from "lodash";
-import { observable } from "mobx";
+import { isEmpty, sortBy } from "lodash";
+import { computed, observable } from "mobx";
 
 import { RootStore } from "./store";
 
 export interface ICustomer {
-    id: number;
+    id?: number;
     title: string;
     name: string;
     surname: string;
@@ -25,6 +25,25 @@ export class DomainStore {
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
+    }
+
+    @computed get getCustomers(): ICustomer[] {
+        return sortBy(this.customers, "title");
+    }
+
+    public createCustomer(customer: ICustomer): Promise<any> {
+        return this.rootStore.authStore.authFetch("/api/v1/customers", "POST", {customer}).then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {throw(resp.errors)});
+                }
+                return response.json().then(
+                    (jsonResp: {data: ICustomer}) => {
+                        this.customers.push(jsonResp.data);
+                    }
+                );
+            }
+        )
     }
 
     public loadCustomers(force: boolean = false): void {

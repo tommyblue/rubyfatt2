@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ICustomer } from "../store/domain";
+import { ICustomer } from "../../store/domain";
 
 interface IProps {
     customer: ICustomer;

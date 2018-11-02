@@ -25,10 +25,10 @@ const Router = () => (
 );
 
 const App = () => (
-    <div style={{display: "flex"}}>
+    <React.Fragment>
         <Messages />
         <Router />
-    </div>
+    </React.Fragment>
 );
 
 ReactDOM.render(

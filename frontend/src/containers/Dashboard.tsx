@@ -18,7 +18,7 @@ class Dasboard extends React.Component<IProps, {}> {
     public render() {
         return (
             <Page sidebarContent={
-                <CustomersList customers={this.props.store.domainStore.customers} />
+                <CustomersList customers={this.props.store.domainStore.customersList} />
             }>
                 <div>
                     Dashboard

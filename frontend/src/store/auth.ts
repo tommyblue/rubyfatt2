@@ -77,7 +77,14 @@ export class AuthStore {
         if (!isEmpty(body) && method !== "GET") {
             requestInit.body = JSON.stringify(body);
         }
-        return fetch(url, requestInit)
+        return fetch(url, requestInit).then((response: Response) => {
+            if (!response.ok) {
+                if (response.status == 401) {
+                    this.signOut();
+                }
+            }
+            return response;
+        })
     };
 
     private setAuthToken(token: string): void {

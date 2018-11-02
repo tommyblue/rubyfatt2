@@ -3,6 +3,8 @@ import { match } from "react-router";
 import { observer } from "mobx-react"
 import * as React from "react";
 
+import { withStyles } from '@material-ui/core/styles';
+
 import CustomerModel from "../models/customer";
 import { RootStore, withStore } from "../store/store";
 import Customer from "../components/Customers/Customer";
@@ -14,6 +16,12 @@ interface IProps {
     classes: any;
     match: match;
 }
+
+const styles = (theme: any) => ({
+    root: {
+        flexGrow: 1
+    }
+});
 
 class WrappedCustomers extends React.Component<IProps, {}> {
 
@@ -31,7 +39,7 @@ class WrappedCustomers extends React.Component<IProps, {}> {
             <Page sidebarContent={
                 <CustomersList customers={this.props.store.domainStore.customersList} />
             }>
-                <div>
+                <div className={this.props.classes.root}>
                     {this.showCustomer()}
                 </div>
             </Page>
@@ -55,4 +63,4 @@ class WrappedCustomers extends React.Component<IProps, {}> {
     }
 }
 
-export default withStore(observer(WrappedCustomers));
+export default withStyles(styles)(withStore(observer(WrappedCustomers)));

@@ -3,12 +3,13 @@ import { computed, observable } from "mobx";
 
 import { RootStore } from "./store";
 import Customer, { ICustomer } from "../models/customer";
-
+import Slip, { ISlip } from "../models/slip";
 
 export class DomainStore {
     rootStore: RootStore = null;
 
     @observable customers: Customer[] = [];
+    @observable slips: {[id: number]: Slip[]} = {};
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
@@ -39,7 +40,7 @@ export class DomainStore {
         }
 
         this.rootStore.authStore.authFetch("/api/v1/customers").then(
-            (response: any) => {
+            (response: Response) => {
                 if (!response.ok) {
                     return console.warn(response.statusText);
                 }
@@ -50,5 +51,30 @@ export class DomainStore {
                 );
             }
         );
+    }
+
+    public loadSlips(customerId: number, force: boolean = false): void {
+        if (this.slips[customerId] !== undefined && !force) {
+            return;
+        }
+        this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/slips?running=true`).then(
+            (response: any) => {
+                if (!response.ok) {
+                    return console.warn(response.statusText);
+                }
+                return response.json().then(
+                    (jsonResp: {data: ISlip[]}) => {
+                        this.slips[customerId] = map(jsonResp.data, (s: ISlip) => new Slip(s));
+                    }
+                );
+            }
+        );
+    }
+
+    public getCustomerSlips(customerId: number): Slip[] {
+        if (this.slips[customerId] !== undefined) {
+            return this.slips[customerId];
+        }
+        return [];
     }
 }

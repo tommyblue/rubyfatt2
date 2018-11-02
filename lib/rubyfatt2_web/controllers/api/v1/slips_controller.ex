@@ -7,8 +7,8 @@ defmodule Rubyfatt2Web.Api.V1.SlipsController do
   alias Rubyfatt2.Repo
 
   def index(conn, params) do
-    query = from s in Rubyfatt2.Slip,
-            join: c in Rubyfatt2.Customer, on: s.customer_id == c.id
+    query = from s in Slip,
+            join: c in Customer, on: s.customer_id == c.id
             and s.customer_id == ^params["customers_id"]
             and c.user_id == ^conn.assigns.signed_user.id
     # The "running" params at "true" will return only slips in a working status, i.e. not with an

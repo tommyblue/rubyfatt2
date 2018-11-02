@@ -5,6 +5,7 @@ import { RootStore } from "./store";
 import Customer, { ICustomer } from "../models/customer";
 import Slip, { ISlip } from "../models/slip";
 import InvoiceProject, { IInvoiceProject } from "../models/invoice_project";
+import Invoice, { IInvoice } from "../models/invoice";
 
 export class DomainStore {
     rootStore: RootStore = null;
@@ -12,6 +13,7 @@ export class DomainStore {
     @observable customers: Customer[] = [];
     @observable slips: {[id: number]: Slip[]} = {};
     @observable invoice_projects: {[id: number]: InvoiceProject[]} = {};
+    @observable invoices: {[id: number]: Invoice[]} = {};
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
@@ -114,6 +116,35 @@ export class DomainStore {
     public getCustomerInvoiceProjects(customerId: number): InvoiceProject[] {
         if (this.invoice_projects[customerId] !== undefined) {
             return this.invoice_projects[customerId];
+        }
+        return [];
+    }
+
+    /*
+     * Invoices
+     */
+    public loadInvoices(customerId: number, force: boolean = false): void {
+        if (this.invoices[customerId] !== undefined && !force) {
+            return;
+        }
+        this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoices`).then(
+            (response: any) => {
+                if (!response.ok) {
+                    return console.warn(response.statusText);
+                }
+                return response.json().then(
+                    (jsonResp: {data: IInvoice[]}) => {
+                        this.invoices[customerId] = map(jsonResp.data, (ip: IInvoice) =>
+                            new Invoice(ip));
+                    }
+                );
+            }
+        );
+    }
+
+    public getCustomerInvoices(customerId: number): Invoice[] {
+        if (this.invoices[customerId] !== undefined) {
+            return this.invoices[customerId];
         }
         return [];
     }

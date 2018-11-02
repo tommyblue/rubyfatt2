@@ -6,6 +6,7 @@ import CurrentProjects from "./CurrentProjects";
 import CustomerDetails from "./CustomerDetails";
 import CustomerModel from "../../models/customer";
 import InvoiceProjects from "./InvoiceProjects";
+import Invoices from "./Invoices";
 
 interface IProps {
     customer: CustomerModel;
@@ -26,6 +27,11 @@ export default class extends React.Component<IProps, {}> {
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
                         <InvoiceProjects customer={this.props.customer} />
+                    </Grid>
+                </Grid>
+                <Grid container spacing={24}>
+                    <Grid item xs={12}>
+                        <Invoices customer={this.props.customer} />
                     </Grid>
                 </Grid>
             </React.Fragment>

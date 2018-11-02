@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import CurrentProjects from "./CurrentProjects";
 import CustomerDetails from "./CustomerDetails";
 import CustomerModel from "../../models/customer";
+import InvoiceProjects from "./InvoiceProjects";
 
 interface IProps {
     customer: CustomerModel;
@@ -24,6 +25,7 @@ export default class extends React.Component<IProps, {}> {
                 </Grid>
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
+                        <InvoiceProjects customer={this.props.customer} />
                     </Grid>
                 </Grid>
             </React.Fragment>

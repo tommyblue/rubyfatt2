@@ -15,6 +15,8 @@ defmodule Rubyfatt2.InvoiceProject do
     field :invoiced, :boolean, default: false
     field :number, :integer
 
+    field :rate, :decimal, virtual: true
+
     timestamps()
   end
 

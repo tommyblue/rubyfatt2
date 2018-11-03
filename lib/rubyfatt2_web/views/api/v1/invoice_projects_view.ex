@@ -12,6 +12,7 @@ defmodule Rubyfatt2Web.Api.V1.InvoiceProjectsView do
       number: invoice_project.number,
       invoiced: invoice_project.invoiced,
       downloaded: invoice_project.downloaded,
+      rate: invoice_project.rate,
       consolidated_tax: invoice_project.consolidated_tax.name,
       slips: Enum.map(invoice_project.slips, fn ip -> ip.id end)
     }

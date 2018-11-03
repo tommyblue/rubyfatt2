@@ -1,7 +1,7 @@
 export interface ISlip {
     id?: number;
     name: string;
-    rate: number;
+    rate: string;
     timed: boolean;
     duration: number;
     customer_id: number;
@@ -22,7 +22,7 @@ export default class Slip {
     constructor(s: ISlip) {
         this.id = s.id;
         this.name = s.name;
-        this.rate = s.rate;
+        this.rate = parseFloat(s.rate);
         this.timed = s.timed;
         this.duration = s.duration;
         this.customer_id = s.customer_id;

@@ -2,8 +2,6 @@ import * as React from "react";
 import { observer } from "mobx-react"
 
 import { withStyles } from '@material-ui/core/styles';
-import Clear from '@material-ui/icons/Clear';
-import Done from '@material-ui/icons/Done';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
+import { getCheckIcon, parseDate } from "../../utils";
 import { RootStore, withStore } from "../../store/store";
 import Customer from "../../models/customer";
 import Invoice from "../../models/invoice";
@@ -52,8 +51,8 @@ class Invoices extends React.Component<IProps, {}> {
                         <TableRow>
                             <TableCell numeric>Number</TableCell>
                             <TableCell>Date</TableCell>
-                            <TableCell>Price</TableCell>
-                            <TableCell>Total</TableCell>
+                            <TableCell numeric>Price</TableCell>
+                            <TableCell numeric>Total</TableCell>
                             <TableCell>Dowloaded</TableCell>
                             <TableCell>Invoiced</TableCell>
                         </TableRow>
@@ -62,12 +61,12 @@ class Invoices extends React.Component<IProps, {}> {
                     {this.props.store.domainStore.getCustomerInvoices(this.props.customer.id).map((invoice: Invoice) => {
                         return (
                             <TableRow key={invoice.id}>
-                                <TableCell>{invoice.number}</TableCell>
-                                <TableCell numeric>{invoice.date}</TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell>{invoice.payment_date}</TableCell>
-                                <TableCell>{this.getIcon(invoice.downloaded)}</TableCell>
+                                <TableCell numeric>{invoice.number}</TableCell>
+                                <TableCell>{parseDate(invoice.date)}</TableCell>
+                                <TableCell numeric></TableCell>
+                                <TableCell numeric></TableCell>
+                                <TableCell>{parseDate(invoice.payment_date)}</TableCell>
+                                <TableCell>{getCheckIcon(invoice.downloaded)}</TableCell>
                             </TableRow>
                         );
                     })}
@@ -75,14 +74,6 @@ class Invoices extends React.Component<IProps, {}> {
                 </Table>
             </Paper>
         );
-    }
-
-    private getIcon(val: boolean): JSX.Element {
-        if (val) {
-            return <Done />;
-        }
-
-        return <Clear />;
     }
 }
 

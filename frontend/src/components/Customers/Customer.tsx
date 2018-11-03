@@ -2,7 +2,7 @@ import * as React from "react";
 
 import Grid from '@material-ui/core/Grid';
 
-import CurrentProjects from "./CurrentProjects";
+import CurrentProjects from "./Slips";
 import CustomerDetails from "./CustomerDetails";
 import CustomerModel from "../../models/customer";
 import InvoiceProjects from "./InvoiceProjects";

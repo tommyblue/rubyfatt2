@@ -4,6 +4,7 @@ export interface IInvoiceProject {
     number: number;
     invoiced: boolean;
     downloaded: boolean;
+    rate: string;
 }
 
 export default class InvoiceProject {
@@ -12,6 +13,7 @@ export default class InvoiceProject {
     public number: number;
     public invoiced: boolean;
     public downloaded: boolean;
+    public rate: number;
 
     constructor(ip: IInvoiceProject) {
         this.id = ip.id;
@@ -19,5 +21,6 @@ export default class InvoiceProject {
         this.number = ip.number;
         this.invoiced = ip.invoiced;
         this.downloaded = ip.downloaded;
+        this.rate = parseFloat(ip.rate);
     }
 }

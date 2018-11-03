@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
 import { RootStore, withStore } from "../../store/store";
+import { getCheckIcon, toMoney } from "../../utils";
 import Customer from "../../models/customer";
 
 interface IProps {
@@ -60,9 +61,9 @@ class CurrentProject extends React.Component<IProps, {}> {
                             <TableCell component="th" scope="row">
                                 {slip.name}
                             </TableCell>
-                            <TableCell numeric>{slip.rate}</TableCell>
-                            <TableCell>{slip.timed}</TableCell>
-                            <TableCell numeric>{slip.duration}</TableCell>
+                            <TableCell numeric>{toMoney(slip.rate)}</TableCell>
+                            <TableCell>{getCheckIcon(slip.timed)}</TableCell>
+                            <TableCell numeric>{slip.duration || "-"}</TableCell>
                         </TableRow>
                         );
                     })}

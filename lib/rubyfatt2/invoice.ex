@@ -15,6 +15,8 @@ defmodule Rubyfatt2.Invoice do
     field :number, :integer
     field :payment_date, :date
 
+    field :rate, :decimal, virtual: true
+
     timestamps()
   end
 

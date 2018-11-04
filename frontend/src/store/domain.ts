@@ -115,7 +115,7 @@ export class DomainStore {
 
     public getCustomerInvoiceProjects(customerId: number): InvoiceProject[] {
         if (this.invoice_projects[customerId] !== undefined) {
-            return this.invoice_projects[customerId];
+            return sortBy(this.invoice_projects[customerId], "date");
         }
         return [];
     }
@@ -144,7 +144,7 @@ export class DomainStore {
 
     public getCustomerInvoices(customerId: number): Invoice[] {
         if (this.invoices[customerId] !== undefined) {
-            return this.invoices[customerId];
+            return sortBy(this.invoices[customerId], "date");
         }
         return [];
     }

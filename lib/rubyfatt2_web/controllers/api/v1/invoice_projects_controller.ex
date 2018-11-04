@@ -15,6 +15,7 @@ defmodule Rubyfatt2Web.Api.V1.InvoiceProjectsController do
             join: s in Slip, on: ip.id == s.invoice_project_id,
             preload: [:consolidated_tax, :slips],
             group_by: ip.id,
+            order_by: ip.date,
             select_merge: %{rate: sum(s.rate)}
 
     invoice_projects = Repo.all(query)

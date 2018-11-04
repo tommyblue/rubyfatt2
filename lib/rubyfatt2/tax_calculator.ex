@@ -10,9 +10,14 @@
 #   the not compound tax
 # - Apart from compound, taxes can be fixed rate (like "add $20") or by percentage
 defmodule Rubyfatt2.TaxCalculator do
-  def total(rate, taxes) do
+  import Ecto.Query, only: [from: 2]
+  alias Rubyfatt2.Repo
+  alias Rubyfatt2.Tax
+
+  def total(rate, consolidated_tax) do
+    taxes = Repo.all(from t in Tax, where: [consolidated_tax_id: ^consolidated_tax.id], order_by: :id)
     [compounds, sum] = calculate_tax(taxes, [], rate)
-    sum + Enum.sum(compounds)
+    Decimal.add(sum, sum_compounds(compounds))
   end
 
   def calculate_tax([tax|taxes], compounds, sum) do
@@ -31,7 +36,7 @@ defmodule Rubyfatt2.TaxCalculator do
   end
 
   def get_compounds(false, partial, compounds, sum) do
-    sum = sum + partial + Enum.sum(compounds)
+    sum = Decimal.add(Decimal.add(sum, partial), sum_compounds(compounds))
     [[], sum]
   end
 
@@ -40,6 +45,14 @@ defmodule Rubyfatt2.TaxCalculator do
   end
 
   def get_partial(false, rate, sum) do
-    sum * rate / 100
+    Decimal.div(Decimal.mult(sum, Decimal.new(rate)), Decimal.new(100))
+  end
+
+  def sum_compounds([]) do
+    Decimal.new(0)
+  end
+
+  def sum_compounds(compounds) do
+    Enum.reduce(compounds, fn x, acc -> Decimal.add(x, acc) end)
   end
 end

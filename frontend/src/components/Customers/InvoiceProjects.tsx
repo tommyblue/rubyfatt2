@@ -64,7 +64,7 @@ class InvoiceProjects extends React.Component<IProps, {}> {
                                 <TableCell numeric>{invoice_project.number}</TableCell>
                                 <TableCell>{parseDate(invoice_project.date)}</TableCell>
                                 <TableCell numeric>{toMoney(invoice_project.rate)}</TableCell>
-                                <TableCell numeric></TableCell>
+                                <TableCell numeric>{toMoney(invoice_project.total)}</TableCell>
                                 <TableCell>{getCheckIcon(invoice_project.downloaded)}</TableCell>
                                 <TableCell>{getCheckIcon(invoice_project.invoiced)}</TableCell>
                             </TableRow>

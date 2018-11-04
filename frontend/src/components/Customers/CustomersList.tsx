@@ -22,7 +22,7 @@ interface IProps {
 }
 
 const CustomersList = (props: IProps) => (
-    <List>
+    <List dense={true}>
         <NewCustomer />
         <Divider />
         {props.customers.map((customer) => (

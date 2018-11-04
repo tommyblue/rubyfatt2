@@ -4,6 +4,8 @@ export interface IInvoice {
     number: number;
     payment_date: string;
     downloaded: boolean;
+    rate: string;
+    total: string;
 }
 
 export default class Invoice {
@@ -12,6 +14,8 @@ export default class Invoice {
     public number: number;
     public payment_date: string;
     public downloaded: boolean;
+    public rate: number;
+    public total: number;
 
     constructor(i: IInvoice) {
         this.id = i.id;
@@ -19,5 +23,7 @@ export default class Invoice {
         this.number = i.number;
         this.payment_date = i.payment_date;
         this.downloaded = i.downloaded;
+        this.rate = parseFloat(i.rate);
+        this.total = parseFloat(i.total);
     }
 }

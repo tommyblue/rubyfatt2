@@ -10,7 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
-import { getCheckIcon, parseDate } from "../../utils";
+import { getCheckIcon, parseDate, toMoney } from "../../utils";
 import { RootStore, withStore } from "../../store/store";
 import Customer from "../../models/customer";
 import Invoice from "../../models/invoice";
@@ -63,8 +63,8 @@ class Invoices extends React.Component<IProps, {}> {
                             <TableRow key={invoice.id}>
                                 <TableCell numeric>{invoice.number}</TableCell>
                                 <TableCell>{parseDate(invoice.date)}</TableCell>
-                                <TableCell numeric></TableCell>
-                                <TableCell numeric></TableCell>
+                                <TableCell numeric>{toMoney(invoice.rate)}</TableCell>
+                                <TableCell numeric>{toMoney(invoice.total)}</TableCell>
                                 <TableCell>{parseDate(invoice.payment_date)}</TableCell>
                                 <TableCell>{getCheckIcon(invoice.downloaded)}</TableCell>
                             </TableRow>

@@ -10,7 +10,7 @@ import { IInvoiceProject } from "../../models/invoice_project";
 import { MessageTypes } from "../../store/messages";
 import { RootStore, withStore } from "../../store/store";
 import NewInvoiceProjectForm from "./Forms/InvoiceProject";
-import NewWrapper from "./NewWrapper";
+import NewWrapper from "./DialogWrapper";
 
 interface IProps {
     store: RootStore;
@@ -54,7 +54,7 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
             <NewWrapper
                 title="Create new invoice project"
                 handleCloseObject={this.emptyInvoiceProject}
-                createFn={this.handleCreate}
+                submitFn={this.handleCreate}
                 AddElement={
                     <Button variant="extendedFab" aria-label="Delete" className={classes.button}>
                         <AddIcon className={classes.extendedIcon} />

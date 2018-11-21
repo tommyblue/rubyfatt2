@@ -3,8 +3,9 @@ import * as React from "react";
 import { observer } from "mobx-react"
 
 import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,10 +14,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
-import { getCheckIcon, toMoney } from "../../utils";
 import { RootStore, withStore } from "../../store/store";
+import { toMoney } from "../../utils";
 import ConfirmDialog from "../ConfirmDialog";
 import Customer from "../../models/customer";
+import EditSlip from "./EditSlip";
 import NewSlip from "./NewSlip";
 import Slip from "../../models/slip";
 
@@ -27,7 +29,8 @@ interface IProps {
 }
 
 interface IState {
-    deleteDialogs: {[id: number]: boolean};
+    selectedSlip: null | Slip;
+    action: null | string;
 }
 
 const styles = (theme: any) => ({
@@ -44,8 +47,10 @@ const styles = (theme: any) => ({
 class CurrentProject extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
-        this.state = {deleteDialogs: {}};
-        this.toggleDeleteDialog = this.toggleDeleteDialog.bind(this);
+        this.state = {selectedSlip: null, action: ""};
+        this.handleDeleteDialogClose = this.handleDeleteDialogClose.bind(this);
+        this.handleDeleteDialogConfirm = this.handleDeleteDialogConfirm.bind(this);
+        this.handleEditDialogClose = this.handleEditDialogClose.bind(this);
     }
 
     public componentDidMount() {
@@ -80,58 +85,72 @@ class CurrentProject extends React.Component<IProps, IState> {
                             </TableCell>
                             <TableCell numeric>{toMoney(slip.rate)}</TableCell>
                             <TableCell>
-                            <IconButton
-                                className={this.props.classes.button}
-                                aria-label="Delete"
-                                onClick={this.openDeleteDialog.bind(this, slip.id)}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                                <ConfirmDialog
-                                    cancelText="No"
-                                    confirmText="Yes"
-                                    handleCancel={this.handleDeleteDialogClose.bind(this, slip.id)}
-                                    handleConfirm={this.handleDeleteDialogConfirm.bind(this, slip.id, slip.customer_id)}
-                                    open={this.isDeleteDialogOpen(slip.id)}
-                                    text={`Do you really want to delete the project "${slip.name}"?`}
-                                    title="Delete project"
-                                />
+                                <IconButton
+                                    className={this.props.classes.button}
+                                    aria-label="Edit"
+                                    onClick={this.openEditDialog.bind(this, slip)}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                                <IconButton
+                                    className={this.props.classes.button}
+                                    aria-label="Delete"
+                                    onClick={this.openDeleteDialog.bind(this, slip)}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
                             </TableCell>
                         </TableRow>
                         );
                     })}
                     </TableBody>
                 </Table>
+                <ConfirmDialog
+                    cancelText="No"
+                    confirmText="Yes"
+                    handleCancel={this.handleDeleteDialogClose}
+                    handleConfirm={this.handleDeleteDialogConfirm}
+                    open={this.state.selectedSlip !== null && this.state.action == "delete"}
+                    text="Do you really want to delete the project?"
+                    title="Delete project"
+                />
+                <EditSlip onDialogClose={this.handleEditDialogClose} slip={this.getEditSlip()} customer={this.props.customer} />
                 <NewSlip customer={this.props.customer} />
             </Paper>
         );
     }
 
-    private handleDeleteDialogConfirm(slipId: number, customerId: number) {
-        this.props.store.domainStore.deleteSlip(slipId, customerId).then(() => {
-            this.handleDeleteDialogClose(slipId);
+    private handleEditDialogClose() {
+        this.setState({action: null, selectedSlip: null});
+    }
+
+    private getEditSlip(): null | Slip {
+        if (this.state.action === "edit" && this.state.selectedSlip !== null) {
+            return this.state.selectedSlip;
+        }
+        return null;
+    }
+
+    private handleDeleteDialogConfirm() {
+        const slip = this.state.selectedSlip;
+        if (slip === null) {
+            return;
+        }
+        this.props.store.domainStore.deleteSlip(slip.id, slip.customer_id).then(() => {
+            this.handleDeleteDialogClose();
         });
     }
 
-    private handleDeleteDialogClose(slipId: number) {
-        this.toggleDeleteDialog(slipId, false);
+    private handleDeleteDialogClose() {
+        this.setState({selectedSlip: null, action: ""});
     }
 
-    private openDeleteDialog(slipId: number) {
-        this.toggleDeleteDialog(slipId, true);
+    private openEditDialog(slip: Slip) {
+        this.setState({selectedSlip: slip, action: "edit"});
     }
 
-    private toggleDeleteDialog(slipId: number, val: boolean) {
-        const deleteDialogs = cloneDeep(this.state.deleteDialogs);
-        deleteDialogs[slipId] = val;
-        this.setState({
-            ...this.state,
-            deleteDialogs,
-        });
-    }
-
-    private isDeleteDialogOpen(slipId: number) {
-        return this.state.deleteDialogs[slipId] === true;
+    private openDeleteDialog(slip: Slip) {
+        this.setState({selectedSlip: slip, action: "delete"});
     }
 }
 

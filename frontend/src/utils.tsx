@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash";
+import { isEmpty, map, join, capitalize } from "lodash";
 import * as moment from "moment";
 import * as React from "react";
 
@@ -17,4 +17,11 @@ export const parseDate = (val: string): string => (
 
 export const getErrMsg = (err?: any): any => {
     return !isEmpty(err) ? err : [{"Error": "An error has occurred"}];
+};
+
+export const prepareErrMessage = (errors: any): string => {
+    return join(
+        map(errors, (fields) => map(fields, (v, k) => `${capitalize(k)} ${v}`))
+        , ", "
+    );
 };

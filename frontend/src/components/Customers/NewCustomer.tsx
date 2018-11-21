@@ -11,7 +11,7 @@ import { ICustomer } from "../../models/customer";
 import { MessageTypes } from "../../store/messages";
 import { RootStore, withStore } from "../../store/store";
 import NewCustomerForm from "./Forms/Customer";
-import NewWrapper from "./NewWrapper";
+import DialogWrapper from "./DialogWrapper";
 
 interface IProps {
     store: RootStore;
@@ -46,10 +46,9 @@ class NewCustomer extends React.Component<IProps, IState> {
     public render(): JSX.Element {
         return (
             <ListItem button>
-                <NewWrapper
+                <DialogWrapper
                     title="Create new customer"
-                    handleCloseObject={this.emptyCustomer}
-                    createFn={this.handleCreate}
+                    submitFn={this.handleCreate}
                     AddElement={
                         <>
                             <ListItemIcon>
@@ -60,7 +59,7 @@ class NewCustomer extends React.Component<IProps, IState> {
                     }
                 >
                     <NewCustomerForm onValueChange={this.setValue} />
-                </NewWrapper>
+                </DialogWrapper>
             </ListItem>
         );
     }

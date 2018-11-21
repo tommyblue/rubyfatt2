@@ -6,11 +6,12 @@ import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 
-import CustomerModel from "../../models/customer";
 import { ISlipForm } from "../../models/slip";
 import { MessageTypes } from "../../store/messages";
+import { prepareErrMessage } from "../../utils";
 import { RootStore, withStore } from "../../store/store";
-import NewWrapper from "./NewWrapper";
+import CustomerModel from "../../models/customer";
+import DialogWrapper from "./DialogWrapper";
 import NewSlipForm from "./Forms/Slip";
 
 interface IProps {
@@ -48,10 +49,9 @@ class NewSlip extends React.Component<IProps, IState> {
     public render(): JSX.Element {
         const { classes } = this.props;
         return (
-            <NewWrapper
+            <DialogWrapper
                 title="Create new project"
-                handleCloseObject={this.emptySlip}
-                createFn={this.handleCreate}
+                submitFn={this.handleCreate}
                 AddElement={
                     <Button variant="extendedFab" aria-label="Delete" className={classes.button}>
                         <AddIcon className={classes.extendedIcon} />
@@ -60,21 +60,14 @@ class NewSlip extends React.Component<IProps, IState> {
                 }
             >
                 <NewSlipForm onValueChange={this.setValue} />
-            </NewWrapper>
+            </DialogWrapper>
         )
     }
 
     private handleCreate(): Promise<any> {
-        return this.props.store.domainStore.createSlip(this.props.customer, this.state.slip).then(
-            () => this.setState({...this.state})
-        ).catch((err) => this.props.store.messagesStore.createMessage(this.prepareMessage(err), MessageTypes.ERROR));
-    }
-
-    private prepareMessage(errors: any): string {
-        return join(
-            map(errors, (fields) => map(fields, (v, k) => `${capitalize(k)} ${v}`))
-            , ", "
-        );
+        return this.props.store.domainStore.createSlip(this.props.customer, this.state.slip)
+            .catch((err) =>
+                this.props.store.messagesStore.createMessage(prepareErrMessage(err), MessageTypes.ERROR));
     }
 
     private setValue(key: string, value: string) {

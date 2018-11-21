@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 
 interface IProps {
     onValueChange: (key: string, value: string) => void;
+    values? : {[fieldName: string]: any};
 }
 
 export default class extends React.Component<IProps, {}> {
@@ -22,7 +23,7 @@ export default class extends React.Component<IProps, {}> {
                             autoFocus={index===0}
                             required={includes(requiredFields, fieldName)}
                             label={capitalize(replace(fieldName, "_", " "))}
-                            defaultValue=""
+                            defaultValue={this.props.values ? this.props.values[fieldName] : ""}
                             margin="normal"
                             fullWidth
                             onChange={(e) => this.props.onValueChange(fieldName, e.target.value)}

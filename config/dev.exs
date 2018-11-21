@@ -12,10 +12,10 @@ config :rubyfatt2, Rubyfatt2Web.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    node: [
-      "node_modules/webpack/bin/webpack.js", "--watch-stdin", "--progress", "--color",
-      cd: Path.expand("../frontend", __DIR__)
-    ]
+    # node: [
+    #   "node_modules/webpack/bin/webpack.js", "--watch-stdin", "--progress", "--color",
+    #   cd: Path.expand("../frontend", __DIR__)
+    # ]
   ]
 
 # ## SSL Support

@@ -108,6 +108,40 @@ export class DomainStore {
         );
     }
 
+    public editSlip(customerId: number, slipId: number, slip: ISlipForm): Promise<any> {
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/slips/${slipId}`, "PUT", {slip}).then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {
+                        throw(getErrMsg(resp.errors));
+                    }).catch(err => {
+                        throw(getErrMsg(err));
+                    });
+                };
+                return response.json().then(
+                    (jsonResp: {data: ISlip}) => {
+                        const slip_obj = new Slip(jsonResp.data);
+                        if (this.slips[slip_obj.customer_id] === undefined) {
+                            this.slips[slip_obj.customer_id] = [];
+                        }
+                        // Remove the slip from the current list
+                        let replaced = false;
+                        this.slips[slip_obj.customer_id].forEach((slip, index) => {
+                            if (slip.id === slip_obj.id) {
+                                this.slips[slip_obj.customer_id][index] = slip_obj;
+                                replaced = true;
+                            }
+                        })
+                        if (!replaced) {
+                            console.warn("wasn't replaced!")
+                            this.slips[slip_obj.customer_id].push(slip_obj);
+                        }
+                    }
+                );
+            }
+        );
+    }
+
     public getCustomerSlips(customerId: number): Slip[] {
         if (this.slips[customerId] !== undefined) {
             return this.slips[customerId];

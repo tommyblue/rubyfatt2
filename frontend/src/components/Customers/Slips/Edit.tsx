@@ -2,14 +2,14 @@ import { cloneDeep } from "lodash";
 import { observer } from "mobx-react"
 import * as React from "react";
 
-import { ISlipForm } from "../../models/slip";
-import { MessageTypes } from "../../store/messages";
-import { prepareErrMessage } from "../../utils";
-import { RootStore, withStore } from "../../store/store";
-import Customer from "../../models/customer";
-import DialogWrapper from "./DialogWrapper";
-import Slip from "../../models/slip";
-import SlipForm from "./Forms/Slip";
+import { ISlipForm } from "../../../models/slip";
+import { MessageTypes } from "../../../store/messages";
+import { prepareErrMessage } from "../../../utils";
+import { RootStore, withStore } from "../../../store/store";
+import Customer from "../../../models/customer";
+import DialogWrapper from "../../DialogWrapper";
+import Slip from "../../../models/slip";
+import SlipForm from "./Form";
 
 interface IProps {
     store: RootStore;

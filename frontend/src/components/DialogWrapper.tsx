@@ -7,7 +7,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-import { RootStore, withStore } from "../../store/store";
+import { RootStore, withStore } from "../store/store";
 
 interface IProps {
     AddElement?: JSX.Element;

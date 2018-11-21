@@ -6,13 +6,13 @@ import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 
-import { ISlipForm } from "../../models/slip";
-import { MessageTypes } from "../../store/messages";
-import { prepareErrMessage } from "../../utils";
-import { RootStore, withStore } from "../../store/store";
-import CustomerModel from "../../models/customer";
-import DialogWrapper from "./DialogWrapper";
-import NewSlipForm from "./Forms/Slip";
+import { ISlipForm } from "../../../models/slip";
+import { MessageTypes } from "../../../store/messages";
+import { prepareErrMessage } from "../../../utils";
+import { RootStore, withStore } from "../../../store/store";
+import CustomerModel from "../../../models/customer";
+import DialogWrapper from "../../DialogWrapper";
+import NewSlipForm from "./Form";
 
 interface IProps {
     store: RootStore;

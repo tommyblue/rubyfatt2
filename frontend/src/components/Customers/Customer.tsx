@@ -2,11 +2,11 @@ import * as React from "react";
 
 import Grid from '@material-ui/core/Grid';
 
-import CurrentProjects from "./Slips";
+import CurrentProjects from "./Slips/Table";
 import CustomerDetails from "./CustomerDetails";
 import CustomerModel from "../../models/customer";
-import InvoiceProjects from "./InvoiceProjects";
-import Invoices from "./Invoices";
+import InvoiceProjects from "./InvoiceProjects/Table";
+import Invoices from "./Invoices/Table";
 
 interface IProps {
     customer: CustomerModel;

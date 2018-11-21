@@ -25,6 +25,7 @@ defmodule Rubyfatt2Web.Api.V1.SlipsController do
   end
 
   def create(conn, %{"customers_id" => customer_id, "slip" => slip_params}) do
+    # TODO: Check if the user owns the customer
     slip_params = Map.merge(slip_params, %{"customer_id" => customer_id})
     changeset = Slip.changeset(%Slip{}, slip_params)
     case Repo.insert(changeset) do
@@ -37,6 +38,13 @@ defmodule Rubyfatt2Web.Api.V1.SlipsController do
         |> put_status(:unprocessable_entity)
         |> render(ChangesetView, "error.json", changeset: changeset)
     end
+  end
 
+  def delete(conn, %{"customers_id" => customer_id, "id" => slip_id}) do
+    # TODO: Check if the user owns the customer
+    slip = Repo.get!(Slip, slip_id)
+    Repo.delete!(slip)
+    conn
+    |> send_resp(204, "")
   end
 end

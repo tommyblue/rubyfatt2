@@ -105,7 +105,7 @@ export class DomainStore {
                     }
                 );
             }
-        )
+        );
     }
 
     public getCustomerSlips(customerId: number): Slip[] {
@@ -113,6 +113,21 @@ export class DomainStore {
             return this.slips[customerId];
         }
         return [];
+    }
+
+    public deleteSlip(slipId: number, customerId: number) {
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/slips/${slipId}`, "DELETE").then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {
+                        throw(getErrMsg(resp.errors));
+                    }).catch(err => {
+                        throw(getErrMsg(err));
+                    });
+                };
+                this.loadSlips(customerId, true);
+            }
+        );
     }
 
     /*

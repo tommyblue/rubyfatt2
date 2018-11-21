@@ -5,6 +5,7 @@ defmodule Rubyfatt2Web.Api.V1.SlipsController do
   alias Rubyfatt2.Customer
   alias Rubyfatt2.Slip
   alias Rubyfatt2.Repo
+  alias Rubyfatt2Web.Api.V1.ChangesetView
 
   def index(conn, params) do
     query = from s in Slip,
@@ -21,5 +22,21 @@ defmodule Rubyfatt2Web.Api.V1.SlipsController do
     end
     slips = Repo.all(query)
     render conn, "index.json", slips: slips
+  end
+
+  def create(conn, %{"customers_id" => customer_id, "slip" => slip_params}) do
+    slip_params = Map.merge(slip_params, %{"customer_id" => customer_id})
+    changeset = Slip.changeset(%Slip{}, slip_params)
+    case Repo.insert(changeset) do
+      {:ok, slip} ->
+        conn
+        |> put_status(:created)
+        |> render("show.json", slip: slip)
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ChangesetView, "error.json", changeset: changeset)
+    end
+
   end
 end

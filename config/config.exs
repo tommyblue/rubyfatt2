@@ -13,7 +13,7 @@ config :rubyfatt2,
 config :rubyfatt2, Rubyfatt2Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "aCluMuqhiTEOQHu9i3voKLuLYhyQB8JpMEIcV/wkHqzLtYjlVOPCRwpUUryYT9V6",
-  render_errors: [view: Rubyfatt2Web.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: Rubyfatt2Web.ErrorView, accepts: ~w(json)],
   pubsub: [name: Rubyfatt2.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

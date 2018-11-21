@@ -20,7 +20,7 @@ defmodule Rubyfatt2.Slip do
   @doc false
   def changeset(slip, attrs) do
     slip
-    |> cast(attrs, [:name, :rate, :timed, :duration])
-    |> validate_required([:name, :rate, :timed, :duration])
+    |> cast(attrs, [:name, :rate, :timed, :duration, :customer_id])
+    |> validate_required([:name, :rate, :customer_id])
   end
 end

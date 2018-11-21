@@ -10,12 +10,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { ICustomer } from "../../models/customer";
 import { MessageTypes } from "../../store/messages";
 import { RootStore, withStore } from "../../store/store";
-import Form from "./Form";
+import NewCustomerForm from "./Forms/Customer";
 import NewWrapper from "./NewWrapper";
 
 interface IProps {
     store: RootStore;
-    classes: any;
 }
 
 interface IState {
@@ -60,7 +59,7 @@ class NewCustomer extends React.Component<IProps, IState> {
                         </>
                     }
                 >
-                    <Form onValueChange={this.setValue} />
+                    <NewCustomerForm onValueChange={this.setValue} />
                 </NewWrapper>
             </ListItem>
         );

@@ -9,6 +9,7 @@ defmodule Rubyfatt2Web.Api.V1.InvoiceProjectsView do
   def render("invoice_project.json", %{invoice_project: invoice_project}) do
     %{
       id: invoice_project.id,
+      customer_id: invoice_project.customer_id,
       date: invoice_project.date,
       number: invoice_project.number,
       invoiced: invoice_project.invoiced,

@@ -1,11 +1,12 @@
 import { isEmpty, map, sortBy } from "lodash";
 import { computed, observable } from "mobx";
 
+import { getErrMsg } from "../utils";
 import { RootStore } from "./store";
 import Customer, { ICustomer } from "../models/customer";
-import Slip, { ISlip } from "../models/slip";
-import InvoiceProject, { IInvoiceProject } from "../models/invoice_project";
 import Invoice, { IInvoice } from "../models/invoice";
+import InvoiceProject, { IInvoiceProject } from "../models/invoice_project";
+import Slip, { ISlip, ISlipForm } from "../models/slip";
 
 export class DomainStore {
     rootStore: RootStore = null;
@@ -83,6 +84,30 @@ export class DomainStore {
         );
     }
 
+    public createSlip(customer: Customer, slip: ISlipForm): Promise<any> {
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customer.id}/slips`, "POST", {slip}).then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {
+                        throw(getErrMsg(resp.errors));
+                    }).catch(err => {
+                        throw(getErrMsg(err));
+                    });
+                };
+                return response.json().then(
+                    (jsonResp: {data: ISlip}) => {
+                        const slip_obj = new Slip(jsonResp.data);
+                        if (this.slips[slip_obj.customer_id] === undefined) {
+                            this.slips[slip_obj.customer_id] = [];
+                        }
+                        this.slips[slip_obj.customer_id].push(slip_obj);
+                        console.log(this.slips[slip_obj.customer_id]);
+                    }
+                );
+            }
+        )
+    }
+
     public getCustomerSlips(customerId: number): Slip[] {
         if (this.slips[customerId] !== undefined) {
             return this.slips[customerId];
@@ -118,6 +143,25 @@ export class DomainStore {
             return sortBy(this.invoice_projects[customerId], "date");
         }
         return [];
+    }
+
+    public createInvoiceProject(invoice_project: IInvoiceProject): Promise<any> {
+        return this.rootStore.authStore.authFetch("/api/v1/invoice_projects", "POST", {invoice_project}).then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {throw(resp.errors)});
+                }
+                return response.json().then(
+                    (jsonResp: {data: IInvoiceProject}) => {
+                        const invoice_project_obj = new InvoiceProject(jsonResp.data);
+                        if (this.invoice_projects[invoice_project_obj.customer_id] === undefined) {
+                            this.invoice_projects[invoice_project_obj.customer_id] = [];
+                        }
+                        this.invoice_projects[invoice_project_obj.customer_id].push(invoice_project_obj);
+                    }
+                );
+            }
+        )
     }
 
     /*

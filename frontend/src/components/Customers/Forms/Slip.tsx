@@ -7,17 +7,18 @@ interface IProps {
     onValueChange: (key: string, value: string) => void;
 }
 
-export default class Form extends React.Component<IProps, {}> {
+export default class extends React.Component<IProps, {}> {
     public render(): JSX.Element {
         const requiredFields = ["title"];
         return (
             <form noValidate autoComplete="off">
                 {
                     [
-                        "title", "name", "surname", "address", "zip_code", "town", "province",
-                        "country", "tax_code", "vat", "info"
+                        "name",
+                        "rate",
                     ].map((fieldName, index) => (
                         <TextField
+                            key={`input_${index}`}
                             autoFocus={index===0}
                             required={includes(requiredFields, fieldName)}
                             label={capitalize(replace(fieldName, "_", " "))}

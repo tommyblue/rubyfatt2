@@ -14,6 +14,7 @@ module.exports = {
         modules: ["deps", "node_modules"]
     },
     devtool: 'source-map',
+    mode: env === 'production' ? 'production' : 'development',
     module: {
         rules: [
             {

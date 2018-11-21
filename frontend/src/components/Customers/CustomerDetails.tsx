@@ -31,7 +31,7 @@ const CustomerDetails = (props: {customer: Customer, classes: any}) => (
         <Typography variant="body1" component="p" gutterBottom>
             Tax code: {props.customer.tax_code || "-"}
         </Typography>
-        <Typography variant="body1" component="p" gutterBottom>
+        <Typography variant="body1" component="div" gutterBottom>
             <div dangerouslySetInnerHTML={{ __html: props.customer.info }} />
         </Typography>
     </Paper>

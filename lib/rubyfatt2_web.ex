@@ -35,7 +35,7 @@ defmodule Rubyfatt2Web do
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
 
       # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
+      # use Phoenix.HTML
 
       import Rubyfatt2Web.Router.Helpers
       import Rubyfatt2Web.ErrorHelpers

@@ -1,5 +1,6 @@
 export interface IInvoiceProject {
     id?: number;
+    customer_id: number;
     date: string;
     number: number;
     invoiced: boolean;
@@ -10,6 +11,7 @@ export interface IInvoiceProject {
 
 export default class InvoiceProject {
     public id: number;
+    public customer_id: number;
     public date: string;
     public number: number;
     public invoiced: boolean;
@@ -19,6 +21,7 @@ export default class InvoiceProject {
 
     constructor(ip: IInvoiceProject) {
         this.id = ip.id;
+        this.customer_id = ip.customer_id;
         this.date = ip.date;
         this.number = ip.number;
         this.invoiced = ip.invoiced;

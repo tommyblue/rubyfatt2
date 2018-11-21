@@ -10,9 +10,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
-import { RootStore, withStore } from "../../store/store";
 import { getCheckIcon, toMoney } from "../../utils";
+import { RootStore, withStore } from "../../store/store";
 import Customer from "../../models/customer";
+import NewSlip from "./NewSlip";
 
 interface IProps {
     store: RootStore;
@@ -41,7 +42,7 @@ class CurrentProject extends React.Component<IProps, {}> {
     }
 
     public render(): JSX.Element {
-        const { classes } = this.props;
+        const { classes, customer, store } = this.props;
         return (
             <Paper className={classes.root} elevation={1}>
                 <Typography variant="h5" component="h3">Current projects</Typography>
@@ -55,7 +56,7 @@ class CurrentProject extends React.Component<IProps, {}> {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    {this.props.store.domainStore.getCustomerSlips(this.props.customer.id).map(slip => {
+                    {store.domainStore.getCustomerSlips(customer.id).map(slip => {
                         return (
                         <TableRow key={slip.id}>
                             <TableCell component="th" scope="row">
@@ -69,6 +70,7 @@ class CurrentProject extends React.Component<IProps, {}> {
                     })}
                     </TableBody>
                 </Table>
+                <NewSlip customer={this.props.customer} />
             </Paper>
         );
     }

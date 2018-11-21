@@ -14,6 +14,7 @@ import { getCheckIcon, parseDate, toMoney } from "../../utils";
 import { RootStore, withStore } from "../../store/store";
 import Customer from "../../models/customer";
 import InvoiceProject from "../../models/invoice_project";
+import NewInvoiceProject from "./NewInvoiceProject";
 
 interface IProps {
     store: RootStore;
@@ -72,6 +73,7 @@ class InvoiceProjects extends React.Component<IProps, {}> {
                     })}
                     </TableBody>
                 </Table>
+                <NewInvoiceProject />
             </Paper>
         );
     }

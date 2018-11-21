@@ -9,6 +9,12 @@ export interface ISlip {
     invoice_project_id: number;
 }
 
+// To create new slips only few fields are required
+export interface ISlipForm {
+    name: string;
+    rate: number;
+};
+
 export default class Slip {
     public id: number;
     public name: string;

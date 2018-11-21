@@ -9,7 +9,7 @@ defmodule Rubyfatt2.Repo.Migrations.CreateInvoices do
       add :downloaded, :boolean, default: false, null: false
       add :consolidated_tax_id, references(:consolidated_taxes, on_delete: :nothing)
       add :customer_id, references(:customers, on_delete: :nothing)
-      add :invoice_project_id, references(:invoice_projects, on_delete: :nothing)
+      add :invoice_project_id, references(:invoice_projects, on_delete: :nilify_all)
 
       timestamps()
     end

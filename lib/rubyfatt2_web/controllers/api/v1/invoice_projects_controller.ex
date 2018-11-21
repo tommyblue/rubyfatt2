@@ -21,4 +21,20 @@ defmodule Rubyfatt2Web.Api.V1.InvoiceProjectsController do
     invoice_projects = Repo.all(query)
     render conn, "index.json", invoice_projects: invoice_projects
   end
+
+  def delete(conn, %{"customers_id" => customer_id, "id" => invoice_project_id}) do
+    invoice_project = get_invoice_project(conn.assigns.signed_user.id, customer_id, invoice_project_id)
+    Repo.delete!(invoice_project)
+    conn
+    |> send_resp(204, "")
+  end
+
+  defp get_invoice_project(user_id, customer_id, invoice_project_id) do
+    query = from s in InvoiceProject,
+            join: c in Customer, on: s.customer_id == c.id
+            and s.customer_id == ^customer_id
+            and c.user_id == ^user_id
+            and s.id == ^invoice_project_id
+    Repo.one!(query)
+  end
 end

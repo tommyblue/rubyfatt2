@@ -2,6 +2,8 @@ import * as React from "react";
 import { observer } from "mobx-react"
 
 import { withStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -12,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { getCheckIcon, parseDate, toMoney } from "../../../utils";
 import { RootStore, withStore } from "../../../store/store";
+import ConfirmDialog from "../../ConfirmDialog";
 import Customer from "../../../models/customer";
 import InvoiceProject from "../../../models/invoice_project";
 import NewInvoiceProject from "./New";
@@ -22,6 +25,10 @@ interface IProps {
     classes: any;
 }
 
+interface IState {
+    selectedInvoiceProject: InvoiceProject | null;
+}
+
 const styles = (theme: any) => ({
     root: {
         ...theme.mixins.gutters(),
@@ -30,7 +37,13 @@ const styles = (theme: any) => ({
     },
 });
 
-class InvoiceProjects extends React.Component<IProps, {}> {
+class InvoiceProjects extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props);
+        this.handleDeleteDialogClose = this.handleDeleteDialogClose.bind(this);
+        this.handleDeleteDialogConfirm = this.handleDeleteDialogConfirm.bind(this);
+        this.state = {selectedInvoiceProject: null};
+    }
 
     public componentDidMount() {
         this.props.store.domainStore.loadInvoiceProjects(this.props.customer.id);
@@ -56,6 +69,7 @@ class InvoiceProjects extends React.Component<IProps, {}> {
                             <TableCell numeric>Total</TableCell>
                             <TableCell>Dowloaded</TableCell>
                             <TableCell>Invoiced</TableCell>
+                            <TableCell />
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -68,14 +82,49 @@ class InvoiceProjects extends React.Component<IProps, {}> {
                                 <TableCell numeric>{toMoney(invoice_project.total)}</TableCell>
                                 <TableCell>{getCheckIcon(invoice_project.downloaded)}</TableCell>
                                 <TableCell>{getCheckIcon(invoice_project.invoiced)}</TableCell>
+                                <TableCell>
+                                    <IconButton
+                                        aria-label="Delete"
+                                        onClick={this.openDeleteDialog.bind(this, invoice_project)}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </TableCell>
                             </TableRow>
                         );
                     })}
                     </TableBody>
                 </Table>
+                <ConfirmDialog
+                    cancelText="No"
+                    confirmText="Yes"
+                    handleCancel={this.handleDeleteDialogClose}
+                    handleConfirm={this.handleDeleteDialogConfirm}
+                    open={this.state.selectedInvoiceProject !== null}
+                    text="Do you really want to delete the invoice project? This action won't reset the numbering"
+                    title="Delete invoice project"
+                />
                 <NewInvoiceProject />
             </Paper>
         );
+    }
+
+    private handleDeleteDialogConfirm() {
+        const invoiceProject = this.state.selectedInvoiceProject;
+        if (invoiceProject === null) {
+            return;
+        }
+        this.props.store.domainStore.deleteInvoiceProject(invoiceProject.id, invoiceProject.customer_id).then(() => {
+            this.handleDeleteDialogClose();
+        });
+    }
+
+    private handleDeleteDialogClose() {
+        this.setState({selectedInvoiceProject: null});
+    }
+
+    private openDeleteDialog(invoiceProject: InvoiceProject) {
+        this.setState({selectedInvoiceProject: invoiceProject});
     }
 }
 

@@ -213,6 +213,21 @@ export class DomainStore {
         )
     }
 
+    public deleteInvoiceProject(invoiceProject: number, customerId: number) {
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoice_projects/${invoiceProject}`, "DELETE").then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {
+                        throw(getErrMsg(resp.errors));
+                    }).catch(err => {
+                        throw(getErrMsg(err));
+                    });
+                };
+                this.loadInvoiceProjects(customerId, true);
+            }
+        );
+    }
+
     /*
      * Invoices
      */

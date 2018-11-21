@@ -8,8 +8,8 @@ defmodule Rubyfatt2.Repo.Migrations.CreateSlips do
       add :timed, :boolean, default: false, null: false
       add :duration, :integer
       add :customer_id, references(:customers, on_delete: :nothing)
-      add :invoice_id, references(:invoices, on_delete: :nothing)
-      add :invoice_project_id, references(:invoice_projects, on_delete: :nothing)
+      add :invoice_id, references(:invoices, on_delete: :nilify_all)
+      add :invoice_project_id, references(:invoice_projects, on_delete: :nilify_all)
 
       timestamps()
     end

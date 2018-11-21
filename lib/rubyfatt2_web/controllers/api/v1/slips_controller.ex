@@ -25,8 +25,8 @@ defmodule Rubyfatt2Web.Api.V1.SlipsController do
   end
 
   def create(conn, %{"customers_id" => customer_id, "slip" => slip_params}) do
-    # TODO: Check if the user owns the customer
-    slip_params = Map.merge(slip_params, %{"customer_id" => customer_id})
+    customer = Repo.get_by!(Customer, [id: customer_id, user_id: conn.assigns.signed_user.id])
+    slip_params = Map.merge(slip_params, %{"customer_id" => customer.id})
     changeset = Slip.changeset(%Slip{}, slip_params)
     case Repo.insert(changeset) do
       {:ok, slip} ->
@@ -41,7 +41,7 @@ defmodule Rubyfatt2Web.Api.V1.SlipsController do
   end
 
   def update(conn, %{"customers_id" => customer_id, "id" => slip_id, "slip" => slip_params}) do
-    slip = Repo.get!(Slip, slip_id)
+    slip = get_slip(conn.assigns.signed_user.id, customer_id, slip_id)
     changeset = Slip.changeset(slip, slip_params)
 
     case Repo.update(changeset) do
@@ -57,10 +57,18 @@ defmodule Rubyfatt2Web.Api.V1.SlipsController do
   end
 
   def delete(conn, %{"customers_id" => customer_id, "id" => slip_id}) do
-    # TODO: Check if the user owns the customer
-    slip = Repo.get!(Slip, slip_id)
+    slip = get_slip(conn.assigns.signed_user.id, customer_id, slip_id)
     Repo.delete!(slip)
     conn
     |> send_resp(204, "")
+  end
+
+  defp get_slip(user_id, customer_id, slip_id) do
+    query = from s in Slip,
+            join: c in Customer, on: s.customer_id == c.id
+            and s.customer_id == ^customer_id
+            and c.user_id == ^user_id
+            and s.id == ^slip_id
+    Repo.one!(query)
   end
 end

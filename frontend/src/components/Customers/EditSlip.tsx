@@ -58,6 +58,9 @@ class EditSlip extends React.Component<IProps, IState> {
     }
 
     private handleUpdate(): Promise<any> {
+        if (this.state.slip === null) {
+            return new Promise((resolve, _) => {resolve(this.handleClose())}, );
+        }
         return this.props.store.domainStore.editSlip(this.props.customer.id, this.props.slip.id, this.state.slip)
             .then(() => this.handleClose())
             .catch((err) =>
@@ -65,11 +68,11 @@ class EditSlip extends React.Component<IProps, IState> {
     }
 
     private setValue(key: string, value: string) {
-        let newSlip: ISlipForm | null = cloneDeep(this.state.slip);;
+        let newSlip: ISlipForm | null = cloneDeep(this.state.slip);
         if (this.state.slip === null) {
             newSlip = {
-                name: "",
-                rate: 0,
+                name: this.props.slip.name,
+                rate: this.props.slip.rate,
             }
         }
         (newSlip as any)[key] = value;

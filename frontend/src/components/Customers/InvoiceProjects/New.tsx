@@ -39,6 +39,7 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
         downloaded: false,
         rate: "",
         total: "",
+        slips: [],
     };
     state: IState = { invoice_project: this.emptyInvoiceProject};
 

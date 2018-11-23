@@ -1,8 +1,10 @@
+import { map } from "lodash";
 import * as React from "react";
 import { observer } from "mobx-react"
 
 import { withStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PdfIcon from '@material-ui/icons/FindInPage';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -18,6 +20,7 @@ import ConfirmDialog from "../../ConfirmDialog";
 import Customer from "../../../models/customer";
 import InvoiceProject from "../../../models/invoice_project";
 import NewInvoiceProject from "./New";
+import Slip from "../../../models/slip";
 
 interface IProps {
     store: RootStore;
@@ -64,6 +67,7 @@ class InvoiceProjects extends React.Component<IProps, IState> {
                     <TableHead>
                         <TableRow>
                             <TableCell numeric>Number</TableCell>
+                            <TableCell>Projects</TableCell>
                             <TableCell>Date</TableCell>
                             <TableCell numeric>Price</TableCell>
                             <TableCell numeric>Total</TableCell>
@@ -77,6 +81,7 @@ class InvoiceProjects extends React.Component<IProps, IState> {
                         return (
                             <TableRow key={invoice_project.id}>
                                 <TableCell numeric>{invoice_project.number}</TableCell>
+                                <TableCell>{this.slipsList(invoice_project.slips)}</TableCell>
                                 <TableCell>{parseDate(invoice_project.date)}</TableCell>
                                 <TableCell numeric>{toMoney(invoice_project.rate)}</TableCell>
                                 <TableCell numeric>{toMoney(invoice_project.total)}</TableCell>
@@ -88,6 +93,12 @@ class InvoiceProjects extends React.Component<IProps, IState> {
                                         onClick={this.openDeleteDialog.bind(this, invoice_project)}
                                     >
                                         <DeleteIcon />
+                                    </IconButton>
+                                    <IconButton
+                                        aria-label="Delete"
+                                        onClick={this.openDeleteDialog.bind(this, invoice_project)}
+                                    >
+                                        <PdfIcon />
                                     </IconButton>
                                 </TableCell>
                             </TableRow>
@@ -125,6 +136,14 @@ class InvoiceProjects extends React.Component<IProps, IState> {
 
     private openDeleteDialog(invoiceProject: InvoiceProject) {
         this.setState({selectedInvoiceProject: invoiceProject});
+    }
+
+    private slipsList(slips: Slip[]): JSX.Element {
+        return (
+            <ul>
+                {map(slips, slip => <li key={`slip_${slip.id}`}>{slip.name}</li>)}
+            </ul>
+        );
     }
 }
 

@@ -1,3 +1,4 @@
+import { map } from "lodash";
 import * as React from "react";
 import { observer } from "mobx-react"
 
@@ -14,6 +15,7 @@ import { getCheckIcon, parseDate, toMoney } from "../../../utils";
 import { RootStore, withStore } from "../../../store/store";
 import Customer from "../../../models/customer";
 import Invoice from "../../../models/invoice";
+import Slip from "../../../models/slip";
 
 interface IProps {
     store: RootStore;
@@ -51,10 +53,12 @@ class Invoices extends React.Component<IProps, {}> {
                         <TableRow>
                             <TableCell numeric>Number</TableCell>
                             <TableCell>Date</TableCell>
+                            <TableCell>Projects</TableCell>
                             <TableCell numeric>Price</TableCell>
                             <TableCell numeric>Total</TableCell>
-                            <TableCell>Dowloaded</TableCell>
-                            <TableCell>Invoiced</TableCell>
+                            <TableCell>Downloaded</TableCell>
+                            <TableCell>Paid</TableCell>
+                            <TableCell>Payment date</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -62,17 +66,27 @@ class Invoices extends React.Component<IProps, {}> {
                         return (
                             <TableRow key={invoice.id}>
                                 <TableCell numeric>{invoice.number}</TableCell>
+                                <TableCell>{this.slipsList(invoice.slips)}</TableCell>
                                 <TableCell>{parseDate(invoice.date)}</TableCell>
                                 <TableCell numeric>{toMoney(invoice.rate)}</TableCell>
                                 <TableCell numeric>{toMoney(invoice.total)}</TableCell>
-                                <TableCell>{parseDate(invoice.payment_date)}</TableCell>
                                 <TableCell>{getCheckIcon(invoice.downloaded)}</TableCell>
+                                <TableCell>{getCheckIcon(invoice.payment_date !== null)}</TableCell>
+                                <TableCell>{parseDate(invoice.payment_date)}</TableCell>
                             </TableRow>
                         );
                     })}
                     </TableBody>
                 </Table>
             </Paper>
+        );
+    }
+
+    private slipsList(slips: Slip[]): JSX.Element {
+        return (
+            <ul>
+                {map(slips, slip => <li key={`slip_${slip.id}`}>{slip.name}</li>)}
+            </ul>
         );
     }
 }

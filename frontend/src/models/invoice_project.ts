@@ -1,3 +1,7 @@
+import { map } from "lodash";
+
+import Slip, { ISlip } from "./slip";
+
 export interface IInvoiceProject {
     id?: number;
     customer_id: number;
@@ -7,6 +11,7 @@ export interface IInvoiceProject {
     downloaded: boolean;
     rate: string;
     total: string;
+    slips: ISlip[];
 }
 
 export default class InvoiceProject {
@@ -18,6 +23,7 @@ export default class InvoiceProject {
     public downloaded: boolean;
     public rate: number;
     public total: number;
+    public slips: Slip[];
 
     constructor(ip: IInvoiceProject) {
         this.id = ip.id;
@@ -28,5 +34,10 @@ export default class InvoiceProject {
         this.downloaded = ip.downloaded;
         this.rate = parseFloat(ip.rate);
         this.total = parseFloat(ip.total);
+        this.slips = this.parseSlips(ip.slips);
+    }
+
+    private parseSlips(islips: ISlip[]): Slip[] {
+        return map(islips, islip => new Slip(islip));
     }
 }

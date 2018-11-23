@@ -1,4 +1,4 @@
-import { cloneDeep, map, join, capitalize } from "lodash";
+import { cloneDeep, map, join, capitalize, isEmpty } from "lodash";
 import { observer } from "mobx-react"
 import * as React from "react";
 
@@ -9,12 +9,14 @@ import Button from '@material-ui/core/Button';
 import { IInvoiceProject } from "../../models/invoice_project";
 import { MessageTypes } from "../../store/messages";
 import { RootStore, withStore } from "../../store/store";
-import NewInvoiceProjectForm from "./Form";
+import Customer from "../../models/customer";
+import Form, { FormField } from "../Form";
 import NewWrapper from "../DialogWrapper";
 
 interface IProps {
     store: RootStore;
     classes: any;
+    customer: Customer;
 }
 
 interface IState {
@@ -31,6 +33,8 @@ const styles = (theme: any) => ({
 });
 
 class NewInvoiceProject extends React.Component<IProps, IState> {
+    formFields: FormField[] = [];
+    requiredFormFields: string[] = [];
     emptyInvoiceProject: IInvoiceProject = {
         date: "",
         customer_id: 0,
@@ -57,15 +61,28 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
                 handleCloseObject={this.emptyInvoiceProject}
                 submitFn={this.handleCreate}
                 AddElement={
-                    <Button variant="extendedFab" aria-label="Delete" className={classes.button}>
+                    <Button
+                        variant="extendedFab"
+                        aria-label="Delete"
+                        className={classes.button}
+                        disabled={this.isButtonDisabled()}
+                    >
                         <AddIcon className={classes.extendedIcon} />
                         New invoice project
                     </Button>
                 }
             >
-                <NewInvoiceProjectForm onValueChange={this.setValue} />
+                <Form
+                    fields={this.formFields}
+                    requiredFields={this.requiredFormFields}
+                    onValueChange={this.setValue}
+                />
             </NewWrapper>
         );
+    }
+
+    private isButtonDisabled(): boolean {
+        return this.props.store.domainStore.getCustomerSlips(this.props.customer.id).length === 0;
     }
 
     private handleCreate(): Promise<any> {
@@ -88,4 +105,4 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
     }
 }
 
-export default withStyles(styles)(withStore(observer(NewInvoiceProject)));
+export default withStore(withStyles(styles)(observer(NewInvoiceProject)));

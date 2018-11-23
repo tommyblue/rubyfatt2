@@ -115,7 +115,7 @@ class InvoiceProjects extends React.Component<IProps, IState> {
                     text="Do you really want to delete the invoice project? This action won't reset the numbering"
                     title="Delete invoice project"
                 />
-                <NewInvoiceProject />
+                <NewInvoiceProject customer={this.props.customer} />
             </Paper>
         );
     }

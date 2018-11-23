@@ -5,6 +5,7 @@ import * as React from "react";
 import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
+import TextField from "@material-ui/core/TextField";
 
 import { ISlipForm } from "../../models/slip";
 import { MessageTypes } from "../../store/messages";
@@ -12,7 +13,7 @@ import { prepareErrMessage } from "../../utils";
 import { RootStore, withStore } from "../../store/store";
 import CustomerModel from "../../models/customer";
 import DialogWrapper from "../DialogWrapper";
-import NewSlipForm from "./Form";
+import Form, { FormField } from "../Form";
 
 interface IProps {
     store: RootStore;
@@ -34,6 +35,14 @@ const styles = (theme: any) => ({
 });
 
 class NewSlip extends React.Component<IProps, IState> {
+    formFields: FormField[] = [{
+        type: TextField,
+        name: "name",
+    }, {
+        type: TextField,
+        name: "rate",
+    }];
+    requiredFormFields: string[] = ["name"];
     emptySlip: ISlipForm = {
         name: "",
         rate: 0,
@@ -59,7 +68,11 @@ class NewSlip extends React.Component<IProps, IState> {
                     </Button>
                 }
             >
-                <NewSlipForm onValueChange={this.setValue} />
+                <Form
+                    fields={this.formFields}
+                    requiredFields={this.requiredFormFields}
+                    onValueChange={this.setValue}
+                />
             </DialogWrapper>
         )
     }

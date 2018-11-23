@@ -101,7 +101,6 @@ export class DomainStore {
                             this.slips[slip_obj.customer_id] = [];
                         }
                         this.slips[slip_obj.customer_id].push(slip_obj);
-                        console.log(this.slips[slip_obj.customer_id]);
                     }
                 );
             }

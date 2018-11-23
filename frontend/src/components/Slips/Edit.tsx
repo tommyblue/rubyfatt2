@@ -2,6 +2,8 @@ import { cloneDeep } from "lodash";
 import { observer } from "mobx-react"
 import * as React from "react";
 
+import TextField from "@material-ui/core/TextField";
+
 import { ISlipForm } from "../../models/slip";
 import { MessageTypes } from "../../store/messages";
 import { prepareErrMessage } from "../../utils";
@@ -9,7 +11,7 @@ import { RootStore, withStore } from "../../store/store";
 import Customer from "../../models/customer";
 import DialogWrapper from "../DialogWrapper";
 import Slip from "../../models/slip";
-import SlipForm from "./Form";
+import Form, { FormField } from "../Form";
 
 interface IProps {
     store: RootStore;
@@ -23,6 +25,15 @@ interface IState {
 }
 
 class EditSlip extends React.Component<IProps, IState> {
+    formFields: FormField[] = [{
+        type: TextField,
+        name: "name",
+    }, {
+        type: TextField,
+        name: "rate",
+    }];
+    requiredFormFields: string[] = ["name"];
+
     constructor(props: IProps) {
         super(props);
         this.handleClose = this.handleClose.bind(this);
@@ -40,7 +51,12 @@ class EditSlip extends React.Component<IProps, IState> {
                 showDialog={this.props.slip !== null}
                 handleCloseFn={this.handleClose}
             >
-                <SlipForm onValueChange={this.setValue} values={this.getValues()} />
+                <Form
+                    fields={this.formFields}
+                    requiredFields={this.requiredFormFields}
+                    onValueChange={this.setValue}
+                    values={this.getValues()}
+                />
             </DialogWrapper>
         )
     }

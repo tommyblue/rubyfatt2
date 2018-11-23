@@ -1,32 +1,34 @@
 import { capitalize, includes, replace } from "lodash";
 import * as React from "react";
 
-import TextField from "@material-ui/core/TextField";
+export interface FormField {
+    type: React.ComponentType<any>;
+    name: string;
+}
 
 interface IProps {
     onValueChange: (key: string, value: string) => void;
     values? : {[fieldName: string]: any};
+    requiredFields?: string[];
+    fields: FormField[];
 }
 
 export default class extends React.Component<IProps, {}> {
     public render(): JSX.Element {
-        const requiredFields = ["title"];
+        const requiredFields = this.props.requiredFields  || [];
         return (
             <form noValidate autoComplete="off">
                 {
-                    [
-                        "name",
-                        "rate",
-                    ].map((fieldName, index) => (
-                        <TextField
+                    this.props.fields.map((field, index) => (
+                        <field.type
                             key={`input_${index}`}
                             autoFocus={index===0}
-                            required={includes(requiredFields, fieldName)}
-                            label={capitalize(replace(fieldName, "_", " "))}
-                            defaultValue={this.props.values ? this.props.values[fieldName] : ""}
+                            required={includes(requiredFields, field.name)}
+                            label={capitalize(replace(field.name, "_", " "))}
+                            defaultValue={this.props.values ? this.props.values[field.name] : ""}
                             margin="normal"
                             fullWidth
-                            onChange={(e) => this.props.onValueChange(fieldName, e.target.value)}
+                            onChange={(e: any) => this.props.onValueChange(field.name, e.target.value)}
                         />
                     ))
                 }

@@ -6,12 +6,13 @@ import AddIcon from '@material-ui/icons/AddCircle';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import TextField from '@material-ui/core/TextField';
 
 import { ICustomer } from "../../models/customer";
 import { MessageTypes } from "../../store/messages";
 import { RootStore, withStore } from "../../store/store";
-import NewCustomerForm from "./Form";
 import DialogWrapper from "../DialogWrapper";
+import Form, { FormField } from "../Form";
 
 interface IProps {
     store: RootStore;
@@ -22,6 +23,13 @@ interface IState {
 }
 
 class NewCustomer extends React.Component<IProps, IState> {
+    private fields: string[] = ["title", "name", "surname", "address", "zip_code", "town", "province",
+    "country", "tax_code", "vat", "info"];
+    formFields: FormField[] = map(this.fields, f => ({
+        name: f,
+        type: TextField,
+    }));
+    requiredFormFields: string[] = ["title"];
     emptyCustomer: ICustomer = {
         title: "",
         name: "",
@@ -58,7 +66,11 @@ class NewCustomer extends React.Component<IProps, IState> {
                         </>
                     }
                 >
-                    <NewCustomerForm onValueChange={this.setValue} />
+                    <Form
+                        fields={this.formFields}
+                        requiredFields={this.requiredFormFields}
+                        onValueChange={this.setValue}
+                    />
                 </DialogWrapper>
             </ListItem>
         );

@@ -44,7 +44,6 @@ class Login extends React.Component<IProps, IState> {
 
     public render(): JSX.Element {
         if (this.props.store.authStore.isAuthenticated) {
-            console.log("authenticated");
             return (
                 <Redirect
                     to={{

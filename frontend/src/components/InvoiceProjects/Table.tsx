@@ -50,6 +50,7 @@ class InvoiceProjects extends React.Component<IProps, IState> {
 
     public componentDidMount() {
         this.props.store.domainStore.loadInvoiceProjects(this.props.customer.id);
+        this.props.store.domainStore.loadConsolidatedTaxes();
     }
 
     public componentDidUpdate(prevProps: IProps, _prevState: any) {

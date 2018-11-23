@@ -12,6 +12,7 @@ import { RootStore, withStore } from "../../store/store";
 import Customer from "../../models/customer";
 import Form, { FormField } from "../Form";
 import NewWrapper from "../DialogWrapper";
+import Radio from "../Forms/Radio";
 
 interface IProps {
     store: RootStore;
@@ -44,6 +45,7 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
         rate: "",
         total: "",
         slips: [],
+        consolidated_tax_id: null,
     };
     state: IState = { invoice_project: this.emptyInvoiceProject};
 
@@ -54,6 +56,20 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
     }
 
     public render(): JSX.Element {
+        this.formFields = [{
+            name: "consolidated_tax_id",
+            type: Radio,
+            componentProps: {
+                handleChange: this.setValue,
+                legend: "Consolidated Taxes",
+                name: "consolidated_tax_id",
+                options: map(this.props.store.domainStore.consolidated_taxes, ct => ({
+                    label: ct.name,
+                    value: ct.id.toString(),
+                })),
+                selectedValue: this.state.invoice_project.consolidated_tax_id,
+            },
+        }];
         const { classes } = this.props;
         return (
             <NewWrapper

@@ -3,6 +3,7 @@ import { computed, observable } from "mobx";
 
 import { getErrMsg } from "../utils";
 import { RootStore } from "./store";
+import ConsolidatedTax, { IConsolidatedTax } from "../models/consolidated_tax";
 import Customer, { ICustomer } from "../models/customer";
 import Invoice, { IInvoice } from "../models/invoice";
 import InvoiceProject, { IInvoiceProject } from "../models/invoice_project";
@@ -15,6 +16,7 @@ export class DomainStore {
     @observable slips: {[id: number]: Slip[]} = {};
     @observable invoice_projects: {[id: number]: InvoiceProject[]} = {};
     @observable invoices: {[id: number]: Invoice[]} = {};
+    @observable consolidated_taxes: ConsolidatedTax[] = [];
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
@@ -254,5 +256,27 @@ export class DomainStore {
             return sortBy(this.invoices[customerId], "date");
         }
         return [];
+    }
+
+    /*
+     * Consolidated taxes
+     */
+    public loadConsolidatedTaxes(force: boolean = false): void {
+        if (this.consolidated_taxes.length > 0 && !force) {
+            return;
+        }
+        this.rootStore.authStore.authFetch(`/api/v1/consolidated_taxes`).then(
+            (response: any) => {
+                if (!response.ok) {
+                    return console.warn(response.statusText);
+                }
+                return response.json().then(
+                    (jsonResp: {data: IConsolidatedTax[]}) => {
+                        this.consolidated_taxes = map(jsonResp.data, (ct: IConsolidatedTax) =>
+                            new ConsolidatedTax(ct));
+                    }
+                );
+            }
+        );
     }
 }

@@ -12,6 +12,7 @@ export interface IInvoiceProject {
     rate: string;
     total: string;
     slips: ISlip[];
+    consolidated_tax_id: number;
 }
 
 export default class InvoiceProject {
@@ -24,6 +25,7 @@ export default class InvoiceProject {
     public rate: number;
     public total: number;
     public slips: Slip[];
+    public consolidated_tax_id: number;
 
     constructor(ip: IInvoiceProject) {
         this.id = ip.id;
@@ -32,6 +34,7 @@ export default class InvoiceProject {
         this.number = ip.number;
         this.invoiced = ip.invoiced;
         this.downloaded = ip.downloaded;
+        this.consolidated_tax_id = ip.consolidated_tax_id;
         this.rate = parseFloat(ip.rate);
         this.total = parseFloat(ip.total);
         this.slips = this.parseSlips(ip.slips);

@@ -17,7 +17,7 @@ defmodule Rubyfatt2Web.Api.V1.InvoiceProjectsView do
       downloaded: invoice_project.downloaded,
       rate: invoice_project.rate,
       total: TaxCalculator.total(invoice_project.rate, invoice_project.consolidated_tax),
-      consolidated_tax: invoice_project.consolidated_tax.name,
+      consolidated_tax_id: invoice_project.consolidated_tax.id,
       slips: render_many(invoice_project.slips, SlipsView, "slip.json", as: :slip)
     }
   end

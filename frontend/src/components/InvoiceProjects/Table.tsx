@@ -14,13 +14,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
-import { getCheckIcon, parseDate, toMoney } from "../../../utils";
-import { RootStore, withStore } from "../../../store/store";
-import ConfirmDialog from "../../ConfirmDialog";
-import Customer from "../../../models/customer";
-import InvoiceProject from "../../../models/invoice_project";
+import { getCheckIcon, parseDate, toMoney } from "../../utils";
+import { RootStore, withStore } from "../../store/store";
+import ConfirmDialog from "../ConfirmDialog";
+import Customer from "../../models/customer";
+import InvoiceProject from "../../models/invoice_project";
 import NewInvoiceProject from "./New";
-import Slip from "../../../models/slip";
+import Slip from "../../models/slip";
 
 interface IProps {
     store: RootStore;

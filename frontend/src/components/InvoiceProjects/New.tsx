@@ -6,11 +6,11 @@ import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 
-import { IInvoiceProject } from "../../../models/invoice_project";
-import { MessageTypes } from "../../../store/messages";
-import { RootStore, withStore } from "../../../store/store";
+import { IInvoiceProject } from "../../models/invoice_project";
+import { MessageTypes } from "../../store/messages";
+import { RootStore, withStore } from "../../store/store";
 import NewInvoiceProjectForm from "./Form";
-import NewWrapper from "../../DialogWrapper";
+import NewWrapper from "../DialogWrapper";
 
 interface IProps {
     store: RootStore;

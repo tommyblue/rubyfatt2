@@ -2,7 +2,7 @@ import { observer } from "mobx-react"
 import * as React from "react";
 
 import { RootStore, withStore } from "../store/store";
-import CustomersList from "../components/Customers/CustomersList";
+import CustomersList from "../components/Customers/List";
 import Page from "../components/Page";
 
 interface IProps {

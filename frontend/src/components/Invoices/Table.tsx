@@ -11,11 +11,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
-import { getCheckIcon, parseDate, toMoney } from "../../../utils";
-import { RootStore, withStore } from "../../../store/store";
-import Customer from "../../../models/customer";
-import Invoice from "../../../models/invoice";
-import Slip from "../../../models/slip";
+import { getCheckIcon, parseDate, toMoney } from "../../utils";
+import { RootStore, withStore } from "../../store/store";
+import Customer from "../../models/customer";
+import Invoice from "../../models/invoice";
+import Slip from "../../models/slip";
 
 interface IProps {
     store: RootStore;

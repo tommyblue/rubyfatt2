@@ -14,13 +14,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
-import { RootStore, withStore } from "../../../store/store";
-import { toMoney } from "../../../utils";
-import ConfirmDialog from "../../ConfirmDialog";
-import Customer from "../../../models/customer";
+import { RootStore, withStore } from "../../store/store";
+import { toMoney } from "../../utils";
+import ConfirmDialog from "../ConfirmDialog";
+import Customer from "../../models/customer";
 import EditSlip from "./Edit";
 import NewSlip from "./New";
-import Slip from "../../../models/slip";
+import Slip from "../../models/slip";
 
 interface IProps {
     store: RootStore;

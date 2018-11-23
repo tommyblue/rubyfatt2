@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { ICustomer } from "../../models/customer";
 import { MessageTypes } from "../../store/messages";
 import { RootStore, withStore } from "../../store/store";
-import NewCustomerForm from "./CustomerForm";
+import NewCustomerForm from "./Form";
 import DialogWrapper from "../DialogWrapper";
 
 interface IProps {

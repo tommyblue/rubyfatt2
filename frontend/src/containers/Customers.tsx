@@ -7,8 +7,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 import CustomerModel from "../models/customer";
 import { RootStore, withStore } from "../store/store";
-import Customer from "../components/Customers/Customer";
-import CustomersList from "../components/Customers/CustomersList";
+import Customer from "../components/Customers/Page";
+import CustomersList from "../components/Customers/List";
 import Page from "../components/Page";
 
 interface IProps {

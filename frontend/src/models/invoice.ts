@@ -12,6 +12,7 @@ export interface IInvoice {
     rate: string;
     total: string;
     slips: ISlip[];
+    consolidated_tax_id: number;
 }
 
 export default class Invoice {
@@ -24,6 +25,7 @@ export default class Invoice {
     public rate: number;
     public total: number;
     public slips: Slip[];
+    public consolidated_tax_id: number;
 
     constructor(i: IInvoice) {
         this.id = i.id;
@@ -32,6 +34,7 @@ export default class Invoice {
         this.number = i.number;
         this.payment_date = i.payment_date;
         this.downloaded = i.downloaded;
+        this.consolidated_tax_id = i.consolidated_tax_id;
         this.rate = parseFloat(i.rate);
         this.total = parseFloat(i.total);
         this.slips = this.parseSlips(i.slips);

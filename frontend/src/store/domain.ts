@@ -303,6 +303,25 @@ export class DomainStore {
         );
     }
 
+    public createInvoice(invoice: IInvoice): Promise<any> {
+        return this.rootStore.authStore.authFetch("/api/v1/invoices", "POST", {invoice}).then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {throw(resp.errors)});
+                }
+                return response.json().then(
+                    (jsonResp: {data: IInvoice}) => {
+                        const invoice_obj = new Invoice(jsonResp.data);
+                        if (this.invoices[invoice_obj.customer_id] === undefined) {
+                            this.invoices[invoice_obj.customer_id] = [];
+                        }
+                        this.invoices[invoice_obj.customer_id].push(invoice_obj);
+                    }
+                );
+            }
+        )
+    }
+
     /*
      * Consolidated taxes
      */

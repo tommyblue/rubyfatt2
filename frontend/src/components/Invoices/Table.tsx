@@ -22,6 +22,7 @@ import { RootStore, withStore } from "../../store/store";
 import ConfirmDialog from "../ConfirmDialog";
 import Customer from "../../models/customer";
 import Invoice from "../../models/invoice";
+import NewInvoice from "./New";
 import Slip from "../../models/slip";
 
 interface IProps {
@@ -135,6 +136,7 @@ class Invoices extends React.Component<IProps, IState> {
                     content={this.getPrintContent()}
                     title="Printing"
                 />
+                <NewInvoice customer={this.props.customer} />
             </Paper>
         );
     }

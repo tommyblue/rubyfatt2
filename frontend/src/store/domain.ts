@@ -214,8 +214,8 @@ export class DomainStore {
         )
     }
 
-    public deleteInvoiceProject(invoiceProject: number, customerId: number) {
-        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoice_projects/${invoiceProject}`, "DELETE").then(
+    public deleteInvoiceProject(invoiceProjectId: number, customerId: number) {
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoice_projects/${invoiceProjectId}`, "DELETE").then(
             (response: Response) => {
                 if (!response.ok) {
                     return response.json().then(resp => {
@@ -237,7 +237,7 @@ export class DomainStore {
             return;
         }
         this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoices`).then(
-            (response: any) => {
+            (response: Response) => {
                 if (!response.ok) {
                     return console.warn(response.statusText);
                 }
@@ -256,6 +256,36 @@ export class DomainStore {
             return sortBy(this.invoices[customerId], "date");
         }
         return [];
+    }
+
+    public deleteInvoice(invoiceId: number, customerId: number) {
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoices/${invoiceId}`, "DELETE").then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {
+                        throw(getErrMsg(resp.errors));
+                    }).catch(err => {
+                        throw(getErrMsg(err));
+                    });
+                };
+                this.loadInvoices(customerId, true);
+            }
+        );
+    }
+
+    public printInvoice(invoiceId: number, customerId: number) {
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoices/${invoiceId}/print`, "GET").then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return console.warn(response.statusText);
+                }
+                return response.json().then(
+                    (jsonResp: any) => {
+                        return jsonResp.data.url;
+                    }
+                );
+            }
+        );
     }
 
     /*

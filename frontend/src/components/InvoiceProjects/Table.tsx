@@ -64,7 +64,7 @@ class InvoiceProjects extends React.Component<IProps, IState> {
         return (
             <Paper className={classes.root} elevation={1}>
                 <Typography variant="h5" component="h3">Invoice projects</Typography>
-                <Table>
+                <Table padding="dense">
                     <TableHead>
                         <TableRow>
                             <TableCell numeric>Number</TableCell>
@@ -88,7 +88,7 @@ class InvoiceProjects extends React.Component<IProps, IState> {
                                 <TableCell numeric>{toMoney(invoice_project.total)}</TableCell>
                                 <TableCell>{getCheckIcon(invoice_project.downloaded)}</TableCell>
                                 <TableCell>{getCheckIcon(invoice_project.invoiced)}</TableCell>
-                                <TableCell>
+                                <TableCell className="nowrap">
                                     <IconButton
                                         aria-label="Delete"
                                         onClick={this.openDeleteDialog.bind(this, invoice_project)}
@@ -112,8 +112,8 @@ class InvoiceProjects extends React.Component<IProps, IState> {
                     confirmText="Yes"
                     handleCancel={this.handleDeleteDialogClose}
                     handleConfirm={this.handleDeleteDialogConfirm}
-                    open={this.state.selectedInvoiceProject !== null}
-                    text="Do you really want to delete the invoice project? This action won't reset the numbering"
+                    isOpen={this.state.selectedInvoiceProject !== null}
+                    content="Do you really want to delete the invoice project? This action won't reset the numbering"
                     title="Delete invoice project"
                 />
                 <NewInvoiceProject customer={this.props.customer} />

@@ -10,6 +10,7 @@ defmodule Rubyfatt2Web.Api.V1.InvoicesView do
   def render("invoice.json", %{invoice: invoice}) do
     %{
       id: invoice.id,
+      customer_id: invoice.customer_id,
       date: invoice.date,
       number: invoice.number,
       payment_date: invoice.payment_date,
@@ -20,5 +21,11 @@ defmodule Rubyfatt2Web.Api.V1.InvoicesView do
       invoice_project_id: invoice.invoice_project_id,
       slips: render_many(invoice.slips, SlipsView, "slip.json", as: :slip)
     }
+  end
+
+  def render("print.json", %{url: url}) do
+    %{data: %{
+      url: url
+    }}
   end
 end

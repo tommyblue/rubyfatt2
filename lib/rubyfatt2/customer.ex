@@ -42,4 +42,8 @@ defmodule Rubyfatt2.Customer do
     |> validate_required([:title])
     |> unique_constraint(:title, name: :customers_user_id_title_index)
   end
+
+  def full_info(c) do
+    "#{c.title}\n#{c.address}\n#{c.zip_code} #{c.town}\nC.F. #{c.tax_code}\nP.IVA #{c.vat}"
+  end
 end

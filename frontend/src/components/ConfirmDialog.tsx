@@ -11,11 +11,11 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 interface IProps {
     cancelText?: string;
     confirmText?: string;
-    handleCancel: () => void;
+    handleCancel?: () => void;
     handleClose?: () => void;
     handleConfirm: () => void;
-    open: boolean;
-    text?: string;
+    isOpen: boolean;
+    content?: string | JSX.Element;
     title?: string;
 }
 
@@ -23,17 +23,15 @@ export default class extends React.Component<IProps, {}> {
     public render() {
         return (
             <Dialog
-                open={this.props.open}
+                open={this.props.isOpen}
                 onClose={this.props.handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">{this.props.title || "Confirm?"}</DialogTitle>
-                {this.getText()}
+                {this.getContent()}
                 <DialogActions>
-                    <Button onClick={this.props.handleCancel} color="primary">
-                        {this.props.cancelText || "Cancel"}
-                    </Button>
+                    {this.getCancelButton()}
                     <Button onClick={this.props.handleConfirm} color="primary" autoFocus>
                         {this.props.confirmText || "Ok"}
                     </Button>
@@ -42,14 +40,24 @@ export default class extends React.Component<IProps, {}> {
         );
     }
 
-    private getText(): JSX.Element | void {
-        if (isEmpty(this.props.text)) {
+    private getCancelButton(): JSX.Element | void {
+        if (this.props.handleCancel) {
+            return (
+                <Button onClick={this.props.handleCancel} color="primary">
+                    {this.props.cancelText || "Cancel"}
+                </Button>
+            );
+        }
+    }
+
+    private getContent(): JSX.Element | void {
+        if (isEmpty(this.props.content)) {
             return;
         }
         return (
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    {this.props.text}
+                    {this.props.content}
                 </DialogContentText>
             </DialogContent>
         );

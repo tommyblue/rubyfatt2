@@ -21,4 +21,28 @@ defmodule Rubyfatt2Web.Api.V1.InvoicesController do
     invoices = Repo.all(query)
     render conn, "index.json", invoices: invoices
   end
+
+  def delete(conn, %{"customers_id" => customer_id, "id" => invoice_id}) do
+    invoice = get_invoice(conn.assigns.signed_user.id, customer_id, invoice_id)
+    Repo.delete!(invoice)
+    conn
+    |> send_resp(204, "")
+  end
+
+  def print(conn, %{"customers_id" => customer_id, "invoices_id" => invoice_id}) do
+    invoice = get_invoice(conn.assigns.signed_user.id, customer_id, invoice_id)
+
+    url = Rubyfatt2.Print.Generator.pdf(invoice, "Ricevuta")
+    render conn, "print.json", url: url
+  end
+
+  defp get_invoice(user_id, customer_id, invoice_id) do
+    query = from i in Invoice,
+            join: c in Customer, on: i.customer_id == c.id
+            and i.customer_id == ^customer_id
+            and c.user_id == ^user_id
+            and i.id == ^invoice_id,
+            preload: [:customer, :slips, :user, :consolidated_tax]
+    Repo.one!(query)
+  end
 end

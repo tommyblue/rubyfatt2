@@ -40,7 +40,9 @@ defmodule Rubyfatt2Web.Router do
       resources "/customers", CustomersController, only: [:index, :create] do
         resources "/slips", SlipsController, only: [:index, :create, :update, :delete]
         resources "/invoice_projects", InvoiceProjectsController, only: [:index, :delete]
-        resources "/invoices", InvoicesController, only: [:index]
+        resources "/invoices", InvoicesController, only: [:index, :delete] do
+          get "/print", InvoicesController, :print
+        end
       end
     end
   end

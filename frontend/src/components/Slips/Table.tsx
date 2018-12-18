@@ -65,7 +65,7 @@ class CurrentProject extends React.Component<IProps, IState> {
         return (
             <Paper className={classes.root} elevation={1}>
                 <Typography variant="h5" component="h3">Current projects</Typography>
-                <Table>
+                <Table padding="dense">
                     <TableHead>
                         <TableRow>
                             <TableCell>Name</TableCell>
@@ -81,7 +81,7 @@ class CurrentProject extends React.Component<IProps, IState> {
                                 {slip.name}
                             </TableCell>
                             <TableCell numeric>{toMoney(slip.rate)}</TableCell>
-                            <TableCell>
+                            <TableCell className="nowrap">
                                 <IconButton
                                     aria-label="Edit"
                                     onClick={this.openEditDialog.bind(this, slip)}
@@ -105,8 +105,8 @@ class CurrentProject extends React.Component<IProps, IState> {
                     confirmText="Yes"
                     handleCancel={this.handleDeleteDialogClose}
                     handleConfirm={this.handleDeleteDialogConfirm}
-                    open={this.state.selectedSlip !== null && this.state.action == "delete"}
-                    text="Do you really want to delete the project?"
+                    isOpen={this.state.selectedSlip !== null && this.state.action == "delete"}
+                    content="Do you really want to delete the project?"
                     title="Delete project"
                 />
                 <EditSlip onDialogClose={this.handleEditDialogClose} slip={this.getEditSlip()} customer={this.props.customer} />

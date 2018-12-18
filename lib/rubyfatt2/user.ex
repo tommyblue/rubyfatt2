@@ -76,4 +76,8 @@ defmodule Rubyfatt2.User do
       error -> error
     end
   end
+
+  def full_info(u) do
+    "#{u.title}\n#{u.address}\n#{u.zip_code} #{u.town}\nC.F. #{u.tax_code}\nP.IVA #{u.vat}\n#{u.email}\n#{u.phone}"
+  end
 end

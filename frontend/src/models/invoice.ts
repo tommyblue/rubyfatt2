@@ -4,6 +4,7 @@ import Slip, { ISlip } from "./slip";
 
 export interface IInvoice {
     id?: number;
+    customer_id: number;
     date: string;
     number: number;
     payment_date: string;
@@ -15,6 +16,7 @@ export interface IInvoice {
 
 export default class Invoice {
     public id: number;
+    public customer_id: number;
     public date: string;
     public number: number;
     public payment_date: string;
@@ -25,6 +27,7 @@ export default class Invoice {
 
     constructor(i: IInvoice) {
         this.id = i.id;
+        this.customer_id = i.customer_id;
         this.date = i.date;
         this.number = i.number;
         this.payment_date = i.payment_date;

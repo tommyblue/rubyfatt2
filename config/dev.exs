@@ -60,3 +60,13 @@ config :rubyfatt2, Rubyfatt2.Repo,
   database: "rubyfatt",
   hostname: "localhost",
   pool_size: 10
+
+import_config "dev.secret.exs"
+
+# dev.secret.exs must contain conf tokens for pdfgeneratorapi.com as:
+#
+# config :rubyfatt2, :pdfgeneratorapi,
+#   key: "abc_this_is_the_key",
+#   secret: "sup3rs3cr3t",
+#   workspace: "my@email.com",
+#   template_id: <template_id_number>

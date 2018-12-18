@@ -3,10 +3,13 @@ import * as React from "react";
 import { observer } from "mobx-react"
 
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
-import PdfIcon from '@material-ui/icons/FindInPage';
 import IconButton from '@material-ui/core/IconButton';
+import OpenInNew from '@material-ui/icons/OpenInNew';
 import Paper from '@material-ui/core/Paper';
+import PdfIcon from '@material-ui/icons/FindInPage';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -30,6 +33,8 @@ interface IProps {
 
 interface IState {
     selectedInvoiceProject: InvoiceProject | null;
+    isPrinting: boolean;
+    printingUrl: string | null;
 }
 
 const styles = (theme: any) => ({
@@ -43,9 +48,12 @@ const styles = (theme: any) => ({
 class InvoiceProjects extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
+
         this.handleDeleteDialogClose = this.handleDeleteDialogClose.bind(this);
         this.handleDeleteDialogConfirm = this.handleDeleteDialogConfirm.bind(this);
-        this.state = {selectedInvoiceProject: null};
+        this.handlePdfPopupClose = this.handlePdfPopupClose.bind(this);
+
+        this.state = {selectedInvoiceProject: null, isPrinting: false, printingUrl: null};
     }
 
     public componentDidMount() {
@@ -97,7 +105,7 @@ class InvoiceProjects extends React.Component<IProps, IState> {
                                     </IconButton>
                                     <IconButton
                                         aria-label="Delete"
-                                        onClick={this.openDeleteDialog.bind(this, invoice_project)}
+                                        onClick={this.handlePrint.bind(this, invoice_project)}
                                     >
                                         <PdfIcon />
                                     </IconButton>
@@ -116,9 +124,52 @@ class InvoiceProjects extends React.Component<IProps, IState> {
                     content="Do you really want to delete the invoice project? This action won't reset the numbering"
                     title="Delete invoice project"
                 />
+                <ConfirmDialog
+                    confirmText="Close"
+                    handleConfirm={this.handlePdfPopupClose}
+                    handleClose={this.handlePdfPopupClose}
+                    isOpen={this.state.isPrinting}
+                    content={this.getPrintContent()}
+                    title="Printing"
+                />
                 <NewInvoiceProject customer={this.props.customer} />
             </Paper>
         );
+    }
+
+    private getPrintContent(): JSX.Element {
+        if (this.state.printingUrl) {
+            return (
+                <>
+                    <Button
+                        aria-label="Print"
+                        onClick={() => {
+                            const tab = window.open(this.state.printingUrl, '_blank');
+                            tab.focus();
+                        }}
+                    >
+                        <OpenInNew />
+                        Open PDF
+                    </Button>
+                </>
+            );
+        }
+        return <CircularProgress className={this.props.classes.progress} />;
+    }
+
+    private handlePrint(invoiceProject: InvoiceProject) {
+        if (invoiceProject === null) {
+            return;
+        }
+        this.setState({...this.state, isPrinting: true});
+
+        this.props.store.domainStore.printInvoiceProject(invoiceProject.id, invoiceProject.customer_id).then((url: string) => {
+            this.setState({...this.state, printingUrl: url});
+        });
+    }
+
+    private handlePdfPopupClose() {
+        this.setState({...this.state, isPrinting: false, printingUrl: null});
     }
 
     private handleDeleteDialogConfirm() {

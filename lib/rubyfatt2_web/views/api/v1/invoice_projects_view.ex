@@ -21,4 +21,10 @@ defmodule Rubyfatt2Web.Api.V1.InvoiceProjectsView do
       slips: render_many(invoice_project.slips, SlipsView, "slip.json", as: :slip)
     }
   end
+
+  def render("print.json", %{url: url}) do
+    %{data: %{
+      url: url
+    }}
+  end
 end

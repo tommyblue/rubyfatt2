@@ -229,6 +229,21 @@ export class DomainStore {
         );
     }
 
+    public printInvoiceProject(invoiceProjectId: number, customerId: number) {
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoice_projects/${invoiceProjectId}/print`, "GET").then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return console.warn(response.statusText);
+                }
+                return response.json().then(
+                    (jsonResp: any) => {
+                        return jsonResp.data.url;
+                    }
+                );
+            }
+        );
+    }
+
     /*
      * Invoices
      */

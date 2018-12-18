@@ -29,12 +29,20 @@ defmodule Rubyfatt2Web.Api.V1.InvoiceProjectsController do
     |> send_resp(204, "")
   end
 
+  def print(conn, %{"customers_id" => customer_id, "invoice_projects_id" => invoice_project_id}) do
+    invoice = get_invoice_project(conn.assigns.signed_user.id, customer_id, invoice_project_id)
+
+    url = Rubyfatt2.Print.Generator.pdf(invoice, "Progetto di notula")
+    render conn, "print.json", url: url
+  end
+
   defp get_invoice_project(user_id, customer_id, invoice_project_id) do
     query = from s in InvoiceProject,
             join: c in Customer, on: s.customer_id == c.id
             and s.customer_id == ^customer_id
             and c.user_id == ^user_id
-            and s.id == ^invoice_project_id
-    Repo.one!(query)
+            and s.id == ^invoice_project_id,
+            preload: [:customer, :slips, :user, :consolidated_tax]
+      Repo.one!(query)
   end
 end

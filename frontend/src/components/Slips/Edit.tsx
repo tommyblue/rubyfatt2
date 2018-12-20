@@ -25,14 +25,16 @@ interface IState {
 }
 
 class EditSlip extends React.Component<IProps, IState> {
-    formFields: FormField[] = [{
+
+    private formFields: FormField[] = [{
         type: TextField,
         name: "name",
     }, {
         type: TextField,
         name: "rate",
     }];
-    requiredFormFields: string[] = ["name"];
+
+    private requiredFormFields: string[] = ["name"];
 
     constructor(props: IProps) {
         super(props);

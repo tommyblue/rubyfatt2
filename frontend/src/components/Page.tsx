@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import NavBar from "../components/NavBar";
+import NavBar from "./NavBar/NavBar";
 import Sidebar from "../components/Sidebar";
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     root: {
         display: 'flex',
     },

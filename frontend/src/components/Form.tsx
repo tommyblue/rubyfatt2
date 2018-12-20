@@ -1,10 +1,13 @@
-import { capitalize, includes, replace } from "lodash";
+import { capitalize, includes, replace, isNil } from "lodash";
 import * as React from "react";
 
 export interface FormField {
     type: React.ComponentType<any>;
     name: string;
+    helperText?: string;
     componentProps?: any;
+    multiline?: number;
+    fullWidth?: boolean;
 }
 
 interface IProps {
@@ -40,10 +43,13 @@ export default class extends React.Component<IProps, {}> {
                 autoFocus={index===0}
                 required={includes(requiredFields, field.name)}
                 label={capitalize(replace(field.name, "_", " "))}
-                defaultValue={this.props.values ? this.props.values[field.name] : ""}
+                value={!isNil(this.props.values) && !isNil(this.props.values[field.name]) ? this.props.values[field.name] : ""}
                 margin="normal"
-                fullWidth
+                fullWidth={field.fullWidth || true}
+                multiline={field.multiline ? true : false}
+                rows={`${field.multiline}` || null}
                 onChange={(e: any) => this.props.onValueChange(field.name, e.target.value)}
+                helperText={field.helperText || ""}
             />
         );
     }

@@ -36,6 +36,7 @@ defmodule Rubyfatt2Web.Router do
     scope "/v1", V1 do
       pipe_through :authenticate
 
+      resources "/user", UsersController, only: [:index, :create]
       resources "/consolidated_taxes", ConsolidatedTaxesController, only: [:index]
       resources "/customers", CustomersController, only: [:index, :create] do
         resources "/slips", SlipsController, only: [:index, :create, :update, :delete]

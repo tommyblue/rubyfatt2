@@ -8,10 +8,12 @@ import Customer, { ICustomer } from "../models/customer";
 import Invoice, { IInvoice } from "../models/invoice";
 import InvoiceProject, { IInvoiceProject } from "../models/invoice_project";
 import Slip, { ISlip, ISlipForm } from "../models/slip";
+import User, { IUser, IUserForm } from "../models/user";
 
 export class DomainStore {
     rootStore: RootStore = null;
 
+    @observable user: User = null;
     @observable customers: Customer[] = [];
     @observable slips: {[id: number]: Slip[]} = {};
     @observable invoice_projects: {[id: number]: InvoiceProject[]} = {};
@@ -20,6 +22,47 @@ export class DomainStore {
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;
+    }
+
+    /*
+     * User
+     */
+    public loadUser(force: boolean = false): void {
+        if (!isEmpty(this.user) && !force) {
+            return
+        }
+
+        this.rootStore.authStore.authFetch("/api/v1/user").then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return console.warn(response.statusText);
+                }
+                return response.json().then(
+                    (jsonResp: {data: IUser}) => {
+                        this.user = new User(jsonResp.data);
+                    }
+                );
+            }
+        );
+    }
+
+    public updateProfile(profile: IUserForm): Promise<any> {
+        return this.rootStore.authStore.authFetch(`/api/v1/user`, "POST", {profile}).then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {
+                        throw(getErrMsg(resp.errors));
+                    }).catch(err => {
+                        throw(getErrMsg(err));
+                    });
+                };
+                return response.json().then(
+                    (jsonResp: {data: IUser}) => {
+                        this.user = new User(jsonResp.data);
+                    }
+                );
+            }
+        );
     }
 
     /*

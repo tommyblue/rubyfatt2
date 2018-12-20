@@ -3,7 +3,7 @@ import { match } from "react-router";
 import { observer } from "mobx-react"
 import * as React from "react";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 
 import CustomerModel from "../models/customer";
 import { RootStore, withStore } from "../store/store";
@@ -17,7 +17,7 @@ interface IProps {
     match: match;
 }
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     root: {
         flexGrow: 1
     }

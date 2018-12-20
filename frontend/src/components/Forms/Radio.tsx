@@ -1,7 +1,7 @@
 import { map } from "lodash";
 import * as React from "react";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -22,7 +22,7 @@ interface IProps {
     selectedValue: any;
 }
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     root: {
       display: 'flex',
     },

@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import * as _ from "lodash";
 import * as React from "react";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 
 import { Form } from "../components/Login/Form";
@@ -21,7 +21,7 @@ export interface IState {
     password: string;
 }
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     container: {
         minWidth: 600,
         minHeight: 400,

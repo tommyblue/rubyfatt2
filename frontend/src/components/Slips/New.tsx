@@ -2,7 +2,7 @@ import { cloneDeep, map, join, capitalize } from "lodash";
 import { observer } from "mobx-react"
 import * as React from "react";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 import TextField from "@material-ui/core/TextField";
@@ -25,7 +25,7 @@ interface IState {
     slip: ISlipForm;
 }
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     button: {
         margin: theme.spacing.unit,
     },

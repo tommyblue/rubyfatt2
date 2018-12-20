@@ -3,7 +3,7 @@ defmodule Rubyfatt2.Print.Generator do
   alias Rubyfatt2.User
   alias Rubyfatt2.TaxCalculator
 
-  def pdf(i, label) do
+  def pdf(i, is_invoice) do
     api_base = "https://us1.pdfgeneratorapi.com/api/v3"
     template_id = Application.get_env(:rubyfatt2, :pdfgeneratorapi)[:template_id]
     url = "#{api_base}/templates/#{template_id}/output?format=pdf&output=url"
@@ -17,6 +17,8 @@ defmodule Rubyfatt2.Print.Generator do
     ]
 
     total = get_sum(i.slips)
+    label = if is_invoice do "Ricevuta" else "Progetto di notula" end
+    extra = if is_invoice do "Coordinate Bancarie\n\n#{i.user.bank_coordinates}" else i.consolidated_tax.notes end
     body = %{
       customer: %{
           info: Customer.full_info(i.customer)
@@ -34,7 +36,7 @@ defmodule Rubyfatt2.Print.Generator do
       },
       slips: Enum.map(i.slips, fn s -> %{title: s.name, total: "#{Decimal.round(s.rate, 2)}€"} end),
       taxes: TaxCalculator.get_taxes_labels(total, i.consolidated_tax),
-      extra: "#{i.consolidated_tax.notes}"
+      extra: extra
     }
     {:ok, json_body} = Poison.encode(body)
     {:ok, raw_response} = HTTPoison.post(url, json_body, headers)

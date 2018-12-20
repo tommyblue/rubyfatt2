@@ -2,7 +2,7 @@ import { map } from "lodash";
 import * as React from "react";
 import { observer } from "mobx-react"
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -37,7 +37,7 @@ interface IState {
     printingUrl: string | null;
 }
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     root: {
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 2,

@@ -1,7 +1,7 @@
 import * as React from "react";
 import classNames from "classnames";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import amber from '@material-ui/core/colors/amber';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CloseIcon from '@material-ui/icons/Close';
@@ -20,7 +20,7 @@ interface IProps extends IMessage {
     classes: any;
 }
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     success: {
         backgroundColor: green[600],
     },

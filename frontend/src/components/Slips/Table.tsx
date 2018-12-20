@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash";
 import * as React from "react";
 import { observer } from "mobx-react"
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
@@ -33,7 +33,7 @@ interface IState {
     action: null | string;
 }
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     root: {
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 2,

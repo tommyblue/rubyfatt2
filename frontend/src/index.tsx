@@ -10,6 +10,7 @@ import { RootStore, Provider } from "./store/store";
 import Customers from "./containers/Customers";
 import Dashboard from "./containers/Dashboard";
 import Login from "./containers/Login";
+import UserProfile from "./containers/UserProfile";
 
 export const drawerWidth = 300;
 
@@ -19,6 +20,7 @@ const Router = () => (
             <Route path='/login' component={Login} />
             <PrivateRoute path='/customers/:id' component={Customers}/>
             <PrivateRoute path='/customers' component={Customers}/>
+            <PrivateRoute path='/profile' component={UserProfile}/>
             <PrivateRoute path='/' component={Dashboard}/>
         </Switch>
     </HashRouter>

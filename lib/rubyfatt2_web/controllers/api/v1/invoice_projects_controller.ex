@@ -32,7 +32,7 @@ defmodule Rubyfatt2Web.Api.V1.InvoiceProjectsController do
   def print(conn, %{"customers_id" => customer_id, "invoice_projects_id" => invoice_project_id}) do
     invoice = get_invoice_project(conn.assigns.signed_user.id, customer_id, invoice_project_id)
 
-    url = Rubyfatt2.Print.Generator.pdf(invoice, "Progetto di notula")
+    url = Rubyfatt2.Print.Generator.pdf(invoice, false)
     render conn, "print.json", url: url
   end
 

@@ -36,12 +36,19 @@ defmodule Rubyfatt2.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:title, :name, :surname, :address, :zip_code, :town, :province, :town, :tax_code, :vat, :phone, :email, :password])
+    |> cast(attrs, [:title, :name, :surname, :address, :zip_code, :town, :province, :tax_code, :vat, :phone, :bank_coordinates, :email, :password])
     |> validate_required([:email, :password])
     |> unique_constraint(:email, downcase: true)
     |> put_password_hash()
     # |> validate_format(:email, ~r/@/)
     # |> validate_inclusion(:age, 18..100)
+  end
+
+  @doc false
+  def profile_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:title, :name, :surname, :address, :zip_code, :town, :province, :tax_code, :vat, :phone, :bank_coordinates])
+    |> validate_required([:name, :surname])
   end
 
   defp put_password_hash(changeset) do
@@ -78,6 +85,6 @@ defmodule Rubyfatt2.User do
   end
 
   def full_info(u) do
-    "#{u.title}\n#{u.address}\n#{u.zip_code} #{u.town}\nC.F. #{u.tax_code}\nP.IVA #{u.vat}\n#{u.email}\n#{u.phone}"
+    "#{u.title} #{u.name} #{u.surname}\n#{u.address}\n#{u.zip_code} #{u.town}\nC.F. #{u.tax_code}\nP.IVA #{u.vat}\n#{u.email}\n#{u.phone}"
   end
 end

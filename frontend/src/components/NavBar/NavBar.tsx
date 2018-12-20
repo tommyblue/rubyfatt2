@@ -2,15 +2,16 @@ import { Link } from "react-router-dom";
 import { observer } from "mobx-react"
 import * as React from "react";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 
-import { RootStore, withStore } from "../store/store";
+import { RootStore, withStore } from "../../store/store";
+import UserMenu from "./UserMenu";
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
     },
@@ -42,6 +43,9 @@ class WrappedNavBar extends React.Component<IProps, {}> {
                     <Typography variant="h6" color="inherit" className={classes.grow}>
                         <Link to="/" className={classes.logo}>Rubyfatt 2</Link>
                     </Typography>
+                    <UserMenu
+                        show={this.props.store.authStore.isAuthenticated}
+                    />
                     {this.authButtons()}
                 </Toolbar>
             </AppBar>

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -10,7 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import NewCustomer from "./New";
 import Customer from "../../models/customer";
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     link: {
         textDecoration: "none",
     }

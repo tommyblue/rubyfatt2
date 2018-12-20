@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Theme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 
 import { drawerWidth } from "../index";
@@ -10,7 +10,7 @@ interface IProps {
     classes: any;
 }
 
-const styles = (theme: any) => ({
+const styles = (theme: Theme) => ({
     drawer: {
       width: drawerWidth,
       flexShrink: 0,

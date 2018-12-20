@@ -15,7 +15,13 @@ config :rubyfatt2, Rubyfatt2Web.Endpoint,
   secret_key_base: "aCluMuqhiTEOQHu9i3voKLuLYhyQB8JpMEIcV/wkHqzLtYjlVOPCRwpUUryYT9V6",
   render_errors: [view: Rubyfatt2Web.ErrorView, accepts: ~w(json)],
   pubsub: [name: Rubyfatt2.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+           adapter: Phoenix.PubSub.PG2],
+   http: [
+      protocol_options: [
+        max_request_line_length: 8192,
+        max_header_value_length: 8192
+      ]
+    ]
 
 # Configures Elixir's Logger
 config :logger, :console,

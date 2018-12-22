@@ -1,4 +1,4 @@
-import { cloneDeep, map, join, capitalize } from "lodash";
+import { cloneDeep, map, isEmpty } from "lodash";
 import { observer } from "mobx-react"
 import * as React from "react";
 
@@ -14,7 +14,7 @@ import Customer from "../../models/customer";
 import Form, { FormField } from "../Form";
 import NewWrapper from "../DialogWrapper";
 import Checkbox from "../Forms/Checkbox";
-import Radio from "../Forms/Radio";
+import Select from "../Forms/Select";
 
 interface IProps {
     store: RootStore;
@@ -38,33 +38,21 @@ const styles = (theme: Theme) => ({
 class NewInvoiceProject extends React.Component<IProps, IState> {
     formFields: FormField[] = [];
     requiredFormFields: string[] = [];
-    emptyInvoiceProject: IInvoiceProject = {
-        date: "",
-        customer_id: 0,
-        number: 0,
-        invoiced: false,
-        downloaded: false,
-        rate: "",
-        total: "",
-        slips: [],
-        consolidated_tax_id: null,
-    };
-    state: IState = { invoice_project: this.emptyInvoiceProject};
 
     constructor(props: IProps) {
         super(props);
         this.handleCreate = this.handleCreate.bind(this);
         this.setValue = this.setValue.bind(this);
+        this.state = { invoice_project: this.getEmptyInvoiceProject(props.customer.id)};
     }
 
     public render(): JSX.Element {
         this.formFields = [{
             name: "consolidated_tax_id",
-            type: Radio,
+            type: Select,
             componentProps: {
                 handleChange: this.setValue,
-                legend: "Consolidated Taxes",
-                name: "consolidated_tax_id",
+                legend: "Taxation",
                 options: map(this.props.store.domainStore.consolidated_taxes, ct => ({
                     label: ct.name,
                     value: ct.id.toString(),
@@ -77,7 +65,6 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
             componentProps: {
                 handleChange: this.setValue,
                 legend: "Slips",
-                name: "slips",
                 options: map(this.props.store.domainStore.slips[this.props.customer.id], s => ({
                     label: s.name,
                     value: s.id.toString(),
@@ -85,11 +72,13 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
                 selectedValue: this.state.invoice_project.slips,
             },
         }];
+
         const { classes } = this.props;
+
         return (
             <NewWrapper
                 title="Create new invoice project"
-                handleCloseObject={this.emptyInvoiceProject}
+                handleCloseObject={this.getEmptyInvoiceProject(this.props.customer.id)}
                 submitFn={this.handleCreate}
                 AddElement={
                     <Button
@@ -112,14 +101,38 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
         );
     }
 
+    private getEmptyInvoiceProject(id: number): IInvoiceProject {
+        return {
+            date: "",
+            customer_id: id,
+            number: 0,
+            invoiced: false,
+            downloaded: false,
+            rate: "",
+            total: "",
+            slips: [],
+            consolidated_tax_id: null,
+        };
+    }
+
     private isButtonDisabled(): boolean {
         return this.props.store.domainStore.getCustomerSlips(this.props.customer.id).length === 0;
     }
 
     private handleCreate(): Promise<any> {
+        if (!this.validate()) {
+            return
+        }
         return this.props.store.domainStore.createInvoiceProject(this.state.invoice_project).then(
             () => this.setState({...this.state})
         ).catch((err) => this.props.store.messagesStore.createMessage(prepareErrMessage(err), MessageTypes.ERROR));
+    }
+
+    private validate(): boolean {
+        return !isEmpty(this.state.invoice_project.consolidated_tax_id) &&
+        !isEmpty(this.state.invoice_project.customer_id) &&
+        !isEmpty(this.state.invoice_project.slips) &&
+        !isEmpty(this.state.invoice_project.date);
     }
 
     private setValue(key: string, value: string | string[]) {

@@ -25,11 +25,9 @@ interface IProps {
 }
 
 const styles = (theme: Theme) => ({
-    root: {
-      display: 'flex',
-    },
     formControl: {
-      margin: theme.spacing.unit * 3,
+      margin: theme.spacing.unit,
+      minWidth: 200,
     },
   });
 

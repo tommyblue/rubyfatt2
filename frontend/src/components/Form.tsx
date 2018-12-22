@@ -31,7 +31,7 @@ export default class extends React.Component<IProps, {}> {
 
     private renderField(field: FormField, requiredFields: string[], index: number): JSX.Element {
         if (field.componentProps !== undefined) {
-            return <field.type key={`field_${index}`} {...field.componentProps} />
+            return <field.type key={`field_${index}`} name={field.name} {...field.componentProps} />
         }
         return this.renderTextField(field, requiredFields, index);
     }

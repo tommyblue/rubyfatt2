@@ -47,6 +47,7 @@ class NewSlip extends React.Component<IProps, IState> {
         name: "",
         rate: 0,
     };
+
     state: IState = { slip: this.emptySlip};
 
     constructor(props: IProps) {
@@ -72,6 +73,7 @@ class NewSlip extends React.Component<IProps, IState> {
                     fields={this.formFields}
                     requiredFields={this.requiredFormFields}
                     onValueChange={this.setValue}
+                    values={this.state.slip}
                 />
             </DialogWrapper>
         )
@@ -79,6 +81,9 @@ class NewSlip extends React.Component<IProps, IState> {
 
     private handleCreate(): Promise<any> {
         return this.props.store.domainStore.createSlip(this.props.customer, this.state.slip)
+            .then(() => {
+                this.setState({ slip: this.emptySlip});
+            })
             .catch((err) =>
                 this.props.store.messagesStore.createMessage(prepareErrMessage(err), MessageTypes.ERROR));
     }

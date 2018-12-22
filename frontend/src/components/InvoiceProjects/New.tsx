@@ -13,6 +13,7 @@ import { RootStore, withStore } from "../../store/store";
 import Customer from "../../models/customer";
 import Form, { FormField } from "../Form";
 import NewWrapper from "../DialogWrapper";
+import Checkbox from "../Forms/Checkbox";
 import Radio from "../Forms/Radio";
 
 interface IProps {
@@ -70,6 +71,19 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
                 })),
                 selectedValue: this.state.invoice_project.consolidated_tax_id,
             },
+        }, {
+            name: "slips",
+            type: Checkbox,
+            componentProps: {
+                handleChange: this.setValue,
+                legend: "Slips",
+                name: "slips",
+                options: map(this.props.store.domainStore.slips[this.props.customer.id], s => ({
+                    label: s.name,
+                    value: s.id.toString(),
+                })),
+                selectedValue: this.state.invoice_project.slips,
+            },
         }];
         const { classes } = this.props;
         return (
@@ -108,7 +122,7 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
         ).catch((err) => this.props.store.messagesStore.createMessage(prepareErrMessage(err), MessageTypes.ERROR));
     }
 
-    private setValue(key: string, value: string) {
+    private setValue(key: string, value: string | string[]) {
         const newInvoiceProject: IInvoiceProject = cloneDeep(this.state.invoice_project);
         (newInvoiceProject as any)[key] = value;
         this.setState({...this.state, invoice_project: newInvoiceProject});

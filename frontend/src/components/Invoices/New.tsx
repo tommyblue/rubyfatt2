@@ -7,11 +7,12 @@ import AddIcon from '@material-ui/icons/AddCircle';
 import Button from '@material-ui/core/Button';
 
 import { IInvoice } from "../../models/invoice";
-import InvoiceProject from "../../models/invoice_project";
 import { MessageTypes } from "../../store/messages";
+import { prepareErrMessage } from "../../utils";
 import { RootStore, withStore } from "../../store/store";
 import Customer from "../../models/customer";
 import Form, { FormField } from "../Form";
+import InvoiceProject from "../../models/invoice_project";
 import NewWrapper from "../DialogWrapper";
 import Radio from "../Forms/Radio";
 
@@ -109,14 +110,7 @@ class NewInvoice extends React.Component<IProps, IState> {
     private handleCreate(): Promise<any> {
         return this.props.store.domainStore.createInvoice(this.state.invoice).then(
             () => this.setState({...this.state})
-        ).catch((err) => this.props.store.messagesStore.createMessage(this.prepareMessage(err), MessageTypes.ERROR));
-    }
-
-    private prepareMessage(errors: any): string {
-        return join(
-            map(errors, (fields) => map(fields, (v, k) => `${capitalize(k)} ${v}`))
-            , ", "
-        );
+        ).catch((err) => this.props.store.messagesStore.createMessage(prepareErrMessage(err), MessageTypes.ERROR));
     }
 
     private setValue(key: string, value: string) {

@@ -17,11 +17,10 @@ interface IProps {
     handleChange: (key: string, value: string) => void;
     options: SelectOption[];
     name: string;
-    legend: string;
+    label: string;
     selectedValue: string;
+    castValueFn: (value: string) => any;
 }
-
-interface IState {}
 
 const styles = (theme: Theme) => ({
     formControl: {
@@ -33,7 +32,7 @@ const styles = (theme: Theme) => ({
     },
 });
 
-class SelectElement extends React.Component<IProps, IState> {
+class SelectElement extends React.Component<IProps, {}> {
     constructor(props: IProps) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -42,7 +41,7 @@ class SelectElement extends React.Component<IProps, IState> {
     public render(): JSX.Element {
         return (
             <FormControl className={this.props.classes.formControl}>
-                <InputLabel>{this.props.legend}</InputLabel>
+                <InputLabel>{this.props.label}</InputLabel>
                 <Select
                     value={this.props.selectedValue || ""}
                     onChange={this.handleChange}
@@ -54,7 +53,10 @@ class SelectElement extends React.Component<IProps, IState> {
                         <em>Please select</em>
                     </MenuItem>
                     {map(this.props.options, (option, i) => (
-                        <MenuItem key={`select_${i}`} value={option.value}>{option.label}</MenuItem>
+                        <MenuItem
+                            key={`select_${i}`}
+                            value={this.props.castValueFn(option.value)}
+                        >{option.label}</MenuItem>
                     ))}
                 </Select>
             </FormControl>

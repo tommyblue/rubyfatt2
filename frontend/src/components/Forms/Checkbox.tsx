@@ -17,11 +17,12 @@ interface CheckOption {
 interface IProps {
     classes: any;
     handleChange: (key: string, value: string[]) => void;
-    legend: string;
+    label: string;
     name: string;
     options: CheckOption[];
     selectedValue: string[];
     helpText?: string;
+    castValueFn: (value: string) => any;
 }
 
 const styles = (theme: Theme) => ({
@@ -36,14 +37,14 @@ class FormRadio extends React.Component<IProps, {}> {
         const { classes } = this.props;
         return (
             <FormControl component="fieldset" className={classes.formControl}>
-                <FormLabel component="legend">{this.props.legend}</FormLabel>
+                <FormLabel component="legend">{this.props.label}</FormLabel>
                 <FormGroup>
                     {map(this.props.options, (option, index) =>
                         <FormControlLabel
                             key={`checkbox_${index}`}
                             control={
                             <Checkbox
-                                checked={includes(this.props.selectedValue, option.value)}
+                                checked={includes(this.props.selectedValue, this.props.castValueFn(option.value))}
                                 onChange={this.handleChange.bind(this, option.value)}
                                 value={option.value}
                             />
@@ -60,9 +61,9 @@ class FormRadio extends React.Component<IProps, {}> {
     private handleChange(value: string) {
         const newSelectedValue = clone(this.props.selectedValue)
         if (includes(this.props.selectedValue, value)) {
-            remove(newSelectedValue, (v) => v === value);
+            remove(newSelectedValue, (v) => v === this.props.castValueFn(value));
         } else {
-            newSelectedValue.push(value);
+            newSelectedValue.push(this.props.castValueFn(value));
         }
         this.props.handleChange(this.props.name, newSelectedValue);
     }

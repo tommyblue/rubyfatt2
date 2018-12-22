@@ -16,7 +16,7 @@ interface RadioOption {
 interface IProps {
     classes: any;
     handleChange: (key: string, value: string) => void;
-    legend: string;
+    label: string;
     name: string;
     options: RadioOption[];
     selectedValue: any;
@@ -44,9 +44,9 @@ class FormRadio extends React.Component<IProps, {}> {
         const { classes } = this.props;
         return (
             <FormControl component="fieldset" className={classes.formControl}>
-                <FormLabel component="legend">{this.props.legend}</FormLabel>
+                <FormLabel component="legend">{this.props.label}</FormLabel>
                 <RadioGroup
-                    aria-label={this.props.legend}
+                    aria-label={this.props.label}
                     name={this.props.name}
                     className={classes.group}
                     value={this.props.selectedValue}

@@ -1,4 +1,4 @@
-import { cloneDeep, map, isEmpty } from "lodash";
+import { cloneDeep, map, isEmpty, isNil } from "lodash";
 import { observer } from "mobx-react"
 import * as React from "react";
 
@@ -10,10 +10,11 @@ import { IInvoiceProject } from "../../models/invoice_project";
 import { MessageTypes } from "../../store/messages";
 import { prepareErrMessage } from "../../utils";
 import { RootStore, withStore } from "../../store/store";
+import Checkbox from "../Forms/Checkbox";
 import Customer from "../../models/customer";
+import DatePicker from "../Forms/DatePicker";
 import Form, { FormField } from "../Form";
 import NewWrapper from "../DialogWrapper";
-import Checkbox from "../Forms/Checkbox";
 import Select from "../Forms/Select";
 
 interface IProps {
@@ -52,24 +53,34 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
             type: Select,
             componentProps: {
                 handleChange: this.setValue,
-                legend: "Taxation",
+                label: "Taxation",
                 options: map(this.props.store.domainStore.consolidated_taxes, ct => ({
                     label: ct.name,
                     value: ct.id.toString(),
                 })),
                 selectedValue: this.state.invoice_project.consolidated_tax_id,
+                castValueFn: (value: string) => parseInt(value),
+            },
+        }, {
+            name: "date",
+            type: DatePicker,
+            componentProps: {
+                label: "Date",
+                handleChange: this.setValue,
+                selectedValue: this.state.invoice_project.date,
             },
         }, {
             name: "slips",
             type: Checkbox,
             componentProps: {
                 handleChange: this.setValue,
-                legend: "Slips",
+                label: "Slips",
                 options: map(this.props.store.domainStore.slips[this.props.customer.id], s => ({
                     label: s.name,
                     value: s.id.toString(),
                 })),
                 selectedValue: this.state.invoice_project.slips,
+                castValueFn: (value: string) => parseInt(value),
             },
         }];
 
@@ -120,19 +131,22 @@ class NewInvoiceProject extends React.Component<IProps, IState> {
     }
 
     private handleCreate(): Promise<any> {
-        if (!this.validate()) {
-            return
+        if (!this.isValid()) {
+            this.props.store.messagesStore.createMessage("Please fill in the form", MessageTypes.WARNING);
+            throw new Error("Please fill in the form")
         }
         return this.props.store.domainStore.createInvoiceProject(this.state.invoice_project).then(
             () => this.setState({...this.state})
         ).catch((err) => this.props.store.messagesStore.createMessage(prepareErrMessage(err), MessageTypes.ERROR));
     }
 
-    private validate(): boolean {
-        return !isEmpty(this.state.invoice_project.consolidated_tax_id) &&
-        !isEmpty(this.state.invoice_project.customer_id) &&
-        !isEmpty(this.state.invoice_project.slips) &&
-        !isEmpty(this.state.invoice_project.date);
+    private isValid(): boolean {
+        return !(
+            isNil(this.state.invoice_project.consolidated_tax_id) ||
+            isNil(this.state.invoice_project.customer_id) ||
+            isEmpty(this.state.invoice_project.slips) ||
+            isEmpty(this.state.invoice_project.date)
+        );
     }
 
     private setValue(key: string, value: string | string[]) {

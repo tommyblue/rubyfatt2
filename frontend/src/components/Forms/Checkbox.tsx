@@ -60,7 +60,7 @@ class FormRadio extends React.Component<IProps, {}> {
 
     private handleChange(value: string) {
         const newSelectedValue = clone(this.props.selectedValue)
-        if (includes(this.props.selectedValue, value)) {
+        if (includes(this.props.selectedValue, this.props.castValueFn(value))) {
             remove(newSelectedValue, (v) => v === this.props.castValueFn(value));
         } else {
             newSelectedValue.push(this.props.castValueFn(value));

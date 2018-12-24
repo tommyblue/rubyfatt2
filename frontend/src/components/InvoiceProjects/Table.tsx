@@ -163,7 +163,7 @@ class InvoiceProjects extends React.Component<IProps, IState> {
         }
         this.setState({...this.state, isPrinting: true});
 
-        this.props.store.domainStore.printInvoiceProject(invoiceProject.id, invoiceProject.customer_id).then((url: string) => {
+        this.props.store.domainStore.printInvoiceProject(invoiceProject, invoiceProject.customer_id).then((url: string) => {
             this.setState({...this.state, printingUrl: url});
         });
     }

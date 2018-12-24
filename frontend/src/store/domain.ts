@@ -239,7 +239,7 @@ export class DomainStore {
     }
 
     public createInvoiceProject(invoice_project: IInvoiceProject): Promise<any> {
-        return this.rootStore.authStore.authFetch("/api/v1/invoice_projects", "POST", {invoice_project}).then(
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${invoice_project.customer_id}/invoice_projects`, "POST", {invoice_project}).then(
             (response: Response) => {
                 if (!response.ok) {
                     return response.json().then(resp => {throw(resp.errors)});
@@ -267,19 +267,24 @@ export class DomainStore {
                         throw(getErrMsg(err));
                     });
                 };
+                this.loadSlips(customerId, true);
                 this.loadInvoiceProjects(customerId, true);
             }
         );
     }
 
-    public printInvoiceProject(invoiceProjectId: number, customerId: number) {
-        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoice_projects/${invoiceProjectId}/print`, "GET").then(
+    public printInvoiceProject(invoiceProject: InvoiceProject, customerId: number) {
+        return this.rootStore.authStore.authFetch(`/api/v1/customers/${customerId}/invoice_projects/${invoiceProject.id}/print`, "GET").then(
             (response: Response) => {
                 if (!response.ok) {
                     return console.warn(response.statusText);
                 }
                 return response.json().then(
                     (jsonResp: any) => {
+                        if (!invoiceProject.downloaded) {
+                            // Force reload to retrieve downloaded status
+                            this.loadInvoiceProjects(customerId, true);
+                        }
                         return jsonResp.data.url;
                     }
                 );

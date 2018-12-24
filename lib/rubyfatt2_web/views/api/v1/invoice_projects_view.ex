@@ -7,6 +7,10 @@ defmodule Rubyfatt2Web.Api.V1.InvoiceProjectsView do
     %{data: render_many(invoice_projects, __MODULE__, "invoice_project.json", as: :invoice_project)}
   end
 
+  def render("show.json", %{invoice_project: invoice_project}) do
+    %{data: render_one(invoice_project, __MODULE__, "invoice_project.json", as: :invoice_project)}
+  end
+
   def render("invoice_project.json", %{invoice_project: invoice_project}) do
     %{
       id: invoice_project.id,

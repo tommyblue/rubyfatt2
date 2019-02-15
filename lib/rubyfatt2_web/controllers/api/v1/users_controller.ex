@@ -24,4 +24,19 @@ defmodule Rubyfatt2Web.Api.V1.UsersController do
         |> render(ChangesetView, "error.json", changeset: changeset)
     end
   end
+
+  def password(conn, %{"password" => password}) do
+    user = conn.assigns.signed_user
+    changeset = User.password_changeset(user, %{"password" => password})
+
+    case Repo.update(changeset) do
+      {:ok, slip} ->
+        conn
+        |> send_resp(:ok, "")
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ChangesetView, "error.json", changeset: changeset)
+    end
+  end
 end

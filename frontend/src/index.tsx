@@ -7,6 +7,7 @@ import 'typeface-roboto';
 import { Messages } from "./components/Notifications/Messages";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { RootStore, Provider } from "./store/store";
+import ChangePassword from "./containers/ChangePassword";
 import Customers from "./containers/Customers";
 import Dashboard from "./containers/Dashboard";
 import Login from "./containers/Login";
@@ -20,6 +21,7 @@ const Router = () => (
             <Route path='/login' component={Login} />
             <PrivateRoute path='/customers/:id' component={Customers}/>
             <PrivateRoute path='/customers' component={Customers}/>
+            <PrivateRoute path='/password_update' component={ChangePassword}/>
             <PrivateRoute path='/profile' component={UserProfile}/>
             <PrivateRoute path='/' component={Dashboard}/>
         </Switch>

@@ -64,7 +64,7 @@ class UserProfile extends React.Component<IProps, IState> {
                         <Link to="/profile" className={classes.link}>Profile</Link>
                     </MenuItem>
                     <MenuItem onClick={this.handleClose}>
-                        <Link to="/profile" className={classes.link}>Change Password</Link>
+                        <Link to="/password_update" className={classes.link}>Change Password</Link>
                     </MenuItem>
                 </Menu>
             </div>

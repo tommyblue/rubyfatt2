@@ -65,6 +65,20 @@ export class DomainStore {
         );
     }
 
+    public updatePassword(password: string): Promise<any> {
+        return this.rootStore.authStore.authFetch(`/api/v1/user/password`, "POST", {password}).then(
+            (response: Response) => {
+                if (!response.ok) {
+                    return response.json().then(resp => {
+                        throw(getErrMsg(resp.errors));
+                    }).catch(err => {
+                        throw(getErrMsg(err));
+                    });
+                };
+            }
+        );
+    }
+
     /*
      * Customers
      */

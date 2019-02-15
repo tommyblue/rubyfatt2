@@ -4,16 +4,15 @@ import * as React from "react";
 import { RootStore, withStore } from "../store/store";
 import CustomersList from "../components/Customers/List";
 import Page from "../components/Page";
-import ProfileForm from "../components/User/ProfileForm";
+import PasswordForm from "../components/User/PasswordForm";
 
 interface IProps {
     store: RootStore;
 }
 
-class UserProfile extends React.Component<IProps, {}> {
+class ChangePassword extends React.Component<IProps, {}> {
 
     public componentDidMount() {
-        this.props.store.domainStore.loadUser();
         this.props.store.domainStore.loadCustomers();
     }
 
@@ -22,10 +21,10 @@ class UserProfile extends React.Component<IProps, {}> {
             <Page sidebarContent={
                 <CustomersList customers={this.props.store.domainStore.customersList} />
             }>
-                <ProfileForm userProfile={this.props.store.domainStore.user}/>
+                <PasswordForm />
             </Page>
         );
     }
 }
 
-export default withStore(observer(UserProfile));
+export default withStore(observer(ChangePassword));

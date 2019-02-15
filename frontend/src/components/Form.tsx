@@ -8,6 +8,7 @@ export interface FormField {
     componentProps?: any;
     multiline?: number;
     fullWidth?: boolean;
+    extraAttrs?: any;
 }
 
 interface IProps {
@@ -37,6 +38,7 @@ export default class extends React.Component<IProps, {}> {
     }
 
     private renderTextField(field: FormField, requiredFields: string[], index: number): JSX.Element {
+        const extraAttrs = field.extraAttrs || {}
         return (
             <field.type
                 key={`field_${index}`}
@@ -50,6 +52,7 @@ export default class extends React.Component<IProps, {}> {
                 rows={`${field.multiline}` || null}
                 onChange={(e: any) => this.props.onValueChange(field.name, e.target.value)}
                 helperText={field.helperText || ""}
+                {...extraAttrs}
             />
         );
     }

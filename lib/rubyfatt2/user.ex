@@ -51,6 +51,14 @@ defmodule Rubyfatt2.User do
     |> validate_required([:name, :surname])
   end
 
+  @doc false
+  def password_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:password])
+    |> validate_required([:password])
+    |> put_password_hash()
+  end
+
   defp put_password_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->

@@ -43,7 +43,8 @@ defmodule Rubyfatt2.Mixfile do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:httpoison, "~> 1.4"}
+      {:httpoison, "~> 1.4"},
+      {:plug_cowboy, "~> 1.0"}
     ]
   end
 

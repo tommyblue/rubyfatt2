@@ -65,7 +65,7 @@ class MessageContent extends React.Component<IProps, {}> {
                     horizontal: 'left',
                 }}
                 open={this.props.isOpen}
-                autoHideDuration={6000}
+                autoHideDuration={10000}
                 onClose={this.props.handleClose}
             >
                 <SnackbarContent

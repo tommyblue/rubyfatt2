@@ -1,4 +1,4 @@
-import { cloneDeep, isEmpty, map } from "lodash";
+import { cloneDeep, forEach, isEmpty, map } from "lodash";
 import { observer } from "mobx-react"
 import * as React from "react";
 
@@ -62,6 +62,12 @@ class ProfileForm extends React.Component<IProps, IState> {
         passwords: { password: null, password_confirmation: null },
     };
 
+    private passwordMessage = `Password must have
+    at least one upper case letter (A–Z),
+    one lower case letter(a-z),
+    one digit (0–9),
+    one special Characters of !@#$%&*()`;
+
     private requiredFormFields: string[] = ["password", "password_confirmation"];
 
     constructor(props: IProps) {
@@ -92,6 +98,9 @@ class ProfileForm extends React.Component<IProps, IState> {
                     >
                         Save
                     </Button>
+                    <Typography component="p">
+                        {this.passwordMessage}
+                    </Typography>
                 </Paper>
             </div>
         );
@@ -112,6 +121,12 @@ class ProfileForm extends React.Component<IProps, IState> {
         if (this.state.passwords === null) {
             return new Promise((resolve, _) => {resolve()}, );
         }
+
+        const pswValidation = this.validatePassword(this.state.passwords.password)
+        if (!pswValidation) {
+            this.props.store.messagesStore.createMessage(this.passwordMessage, MessageTypes.WARNING);
+            return;
+        }
         return this.props.store.domainStore.updatePassword(this.state.passwords.password)
             .then(() => {
                 this.props.store.messagesStore.createMessage("Password updated", MessageTypes.SUCCESS);
@@ -129,6 +144,12 @@ class ProfileForm extends React.Component<IProps, IState> {
             (validations as any).password_confirmation = true;
         }
         this.setState({...this.state, passwords: newPasswords, validations});
+    }
+
+    private validatePassword(password: string): boolean {
+        var regExp = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()]).{8,}/;
+
+        return regExp.test(password);
     }
 }
 

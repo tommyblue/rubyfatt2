@@ -3,9 +3,10 @@
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
-use Mix.Config
 
 # General application configuration
+use Mix.Config
+
 config :rubyfatt2,
   ecto_repos: [Rubyfatt2.Repo]
 
@@ -27,6 +28,14 @@ config :rubyfatt2, Rubyfatt2Web.Endpoint,
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:user_id]
+
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
+
+# config :cors_plug,
+#   origin: ["*"],
+#   max_age: 86400,
+#   methods: ["GET", "POST", "PUT", "DELETE"]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

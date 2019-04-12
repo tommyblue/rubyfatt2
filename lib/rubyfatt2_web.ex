@@ -21,8 +21,8 @@ defmodule Rubyfatt2Web do
     quote do
       use Phoenix.Controller, namespace: Rubyfatt2Web
       import Plug.Conn
-      import Rubyfatt2Web.Router.Helpers
       import Rubyfatt2Web.Gettext
+      alias Rubyfatt2Web.Router.Helpers, as: Routes
     end
   end
 
@@ -37,9 +37,9 @@ defmodule Rubyfatt2Web do
       # Use all HTML functionality (forms, tags, etc)
       # use Phoenix.HTML
 
-      import Rubyfatt2Web.Router.Helpers
       import Rubyfatt2Web.ErrorHelpers
       import Rubyfatt2Web.Gettext
+      alias Rubyfatt2Web.Router.Helpers, as: Routes
     end
   end
 

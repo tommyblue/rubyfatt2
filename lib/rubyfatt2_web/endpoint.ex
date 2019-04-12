@@ -1,7 +1,9 @@
 defmodule Rubyfatt2Web.Endpoint do
   use Phoenix.Endpoint, otp_app: :rubyfatt2
 
-  socket "/socket", Rubyfatt2Web.UserSocket
+  socket "/socket", Rubyfatt2Web.UserSocket,
+    websocket: true,
+    longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -24,7 +26,7 @@ defmodule Rubyfatt2Web.Endpoint do
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Poison
+    json_decoder: Phoenix.json_library()
 
   plug Plug.MethodOverride
   plug Plug.Head

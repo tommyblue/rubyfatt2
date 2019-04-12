@@ -58,7 +58,7 @@ config :rubyfatt2, Rubyfatt2.Repo,
   username: "postgres",
   password: "postgres",
   database: "rubyfatt",
-  hostname: "localhost",
+  hostname: (System.get_env("IS_DOCKER") && "db") || "localhost",
   pool_size: 10
 
 import_config "dev.secret.exs"
